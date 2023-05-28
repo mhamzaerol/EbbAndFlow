@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
-import GoBackArrowIcon from 'assets/svg/GoBackArrowIcon';
-import EraserIcon from 'assets/svg/EraserIcon';
-import MoodEdit from 'src/components/MoodEdit';
-import NotePencilIcon from 'assets/svg/NotePencilIcon';
-import ReturnIcon from 'assets/svg/ReturnIcon';
+import { GoBackArrowIcon } from 'assets/svg/GoBackArrowIcon';
+import { EraserIcon } from 'assets/svg/EraserIcon';
+import { MoodEdit } from 'src/components/MoodEdit';
+import { NotePencilIcon } from 'assets/svg/NotePencilIcon';
+import { ReturnIcon } from 'assets/svg/ReturnIcon';
 
 
-export default function MoodTracker() {
+export function MoodTracker() {
     return (
         <View style={{ flex: 1, flexDirection: 'col', width: '100%', backgroundColor: 'white'}}>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>

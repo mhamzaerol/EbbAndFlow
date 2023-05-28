@@ -14,17 +14,17 @@ const defaultProps = {
     faceRadius: 20,
 };
 
-export default function MoodSquare(props) {
+export function MoodSquare(props) {
     const finalProps = {
         ...defaultProps,
         ...props,
     };
 
     const horizontalSliderValue = useSelector(
-        (state) => state.sliderValueReducer.MoodTrackerHorizontalSlider
+        (state) => state.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerHorizontalSlider
     );
     const verticalSliderValue = useSelector(
-        (state) => state.sliderValueReducer.MoodTrackerVerticalSlider
+        (state) => state.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerVerticalSlider
     );
 
     const [cx, setCx] = useState(0);

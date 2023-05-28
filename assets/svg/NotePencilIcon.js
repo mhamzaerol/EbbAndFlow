@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-function NotePencilIcon(props) {
+export function NotePencilIcon(props) {
   return (
     <Svg
       width={32}
@@ -32,5 +32,3 @@ function NotePencilIcon(props) {
     </Svg>
   )
 }
-
-export default NotePencilIcon

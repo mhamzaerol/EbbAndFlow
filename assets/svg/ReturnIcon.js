@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-function ReturnIcon(props) {
+export function ReturnIcon(props) {
   return (
     <Svg
       width={32}
@@ -32,5 +32,3 @@ function ReturnIcon(props) {
     </Svg>
   )
 }
-
-export default ReturnIcon

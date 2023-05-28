@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-function GoBackArrowIcon(props) {
+export function GoBackArrowIcon(props) {
   return (
     <Svg
       width={48}
@@ -20,5 +20,3 @@ function GoBackArrowIcon(props) {
     </Svg>
   )
 }
-
-export default GoBackArrowIcon

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSliderValue } from 'src/redux/actions';
@@ -16,8 +16,8 @@ const defaultProps = {
     id: 'MoodTrackerHorizontalSlider',
 }
 
-export default function SliderWithDescriptor(props) {
-   
+export function SliderWithDescriptor(props) {
+
     // prop management
     let finalProps = {
         ...defaultProps,
@@ -25,7 +25,7 @@ export default function SliderWithDescriptor(props) {
     }
 
     // redux
-    const sliderValue = useSelector((state) => {return state.sliderValueReducer[finalProps.id]});
+    const sliderValue = useSelector((state) => state.sliderValueReducer.temporaryData.MoodTrackerViewData[finalProps.id]);
     const dispatch = useDispatch();
 
     // when initialized, set the slider value to the default value
@@ -39,9 +39,9 @@ export default function SliderWithDescriptor(props) {
 
     // view
     return (
-        <View style={{flex: 0, flexDirection: 'column', width: 250, transform:[{rotate: finalProps.transformAngle}]}}>
-            <Slider {...finalProps} style={{}} onValueChange={(val) => {dispatch(setSliderValue(finalProps.id, val))}} value={sliderValue}/>
-            <Text style={{alignSelf: 'center', fontSize: 16}}>{finalProps.text}: {sliderValue}</Text>
+        <View style={{ flex: 0, flexDirection: 'column', width: 250, transform: [{ rotate: finalProps.transformAngle }] }}>
+            <Slider {...finalProps} style={{}} onValueChange={(val) => { dispatch(setSliderValue(finalProps.id, val)) }} value={sliderValue} />
+            <Text style={{ alignSelf: 'center', fontSize: 16 }}>{finalProps.text}: {sliderValue}</Text>
         </View>
     );
 }

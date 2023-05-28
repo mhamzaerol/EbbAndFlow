@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-function EraserIcon(props) {
+export function EraserIcon(props) {
   return (
     <Svg
       width={48}
@@ -26,5 +26,3 @@ function EraserIcon(props) {
     </Svg>
   )
 }
-
-export default EraserIcon
