@@ -39,8 +39,8 @@ export function SliderWithDescriptor(props) {
 
     // view
     return (
-        <View style={{ flex: 0, flexDirection: 'column', width: 250, transform: [{ rotate: finalProps.transformAngle }] }}>
-            <Slider {...finalProps} style={{}} onValueChange={(val) => { dispatch(setSliderValue(finalProps.id, val)) }} value={sliderValue} />
+        <View style={{ flex: 0, flexDirection: 'column', transform: [{ rotate: finalProps.transformAngle }] }}>
+            <Slider {...finalProps} style={{width: 250}} onValueChange={(val) => { dispatch(setSliderValue(finalProps.id, val)) }} value={sliderValue} />
             <Text style={{ alignSelf: 'center', fontSize: 16 }}>{finalProps.text}: {sliderValue}</Text>
         </View>
     );

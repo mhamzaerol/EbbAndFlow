@@ -4,15 +4,17 @@ import { MoodSquare } from 'src/components/MoodSquare';
 import { SliderWithDescriptor } from 'src/components/SliderWithDescriptor';
 
 
-export function MoodEdit(props) {
+export function MoodEdit() {
     return (
-        <View {...props}>
-            <View style={{flexDirection: 'row'}}>
-                <MoodSquare/>
-                <SliderWithDescriptor
-                    text='Feeling'
-                    id='MoodTrackerVerticalSlider'
-                />
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%'}}>
+            <View style={{flex: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{flexDirection: 'row', width: '100%'}}>
+                    <MoodSquare/>
+                    <SliderWithDescriptor
+                        text='Feeling'
+                        id='MoodTrackerVerticalSlider'
+                    />    
+                </View>
             </View>
             <SliderWithDescriptor 
                 text='Intensity'
