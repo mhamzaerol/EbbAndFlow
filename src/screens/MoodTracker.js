@@ -10,7 +10,7 @@ import { ReturnIcon } from 'assets/svg/ReturnIcon';
 export function MoodTracker() {
     return (
         <View style={{ flex: 1, flexDirection: 'col', width: '100%', backgroundColor: 'white'}}>
-            <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+            <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingHorizontal: 10, paddingVertical: 20}}>
                 <TouchableOpacity>
                     <GoBackArrowIcon height='48' width='48' />
                 </TouchableOpacity>
@@ -24,7 +24,7 @@ export function MoodTracker() {
                 </Text>
             </View>
             <MoodEdit/>        
-            <View style={{ flex: 0.1, flexDirection: 'row', justifyContent: 'center', width: '100%'}}>
+            <View style={{ flex: 0.12, flexDirection: 'row', justifyContent: 'center', width: '100%', paddingHorizontal: 10, paddingVertical: 20}}>
                 <TouchableOpacity style={{flex: 0, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10, borderColor: 'black', borderWidth: 1}}>
                     <NotePencilIcon width='32' height='32' style={{marginRight: 4}}/>
                     <Text style={{ fontSize: 20 }}>Write Diary</Text>

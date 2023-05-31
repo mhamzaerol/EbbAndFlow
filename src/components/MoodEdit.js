@@ -7,18 +7,19 @@ import { SliderWithDescriptor } from 'src/components/SliderWithDescriptor';
 export function MoodEdit() {
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%'}}>
-            <View style={{flex: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                <View style={{flexDirection: 'row', width: '100%'}}>
-                    <MoodSquare/>
-                    <SliderWithDescriptor
-                        text='Feeling'
-                        id='MoodTrackerVerticalSlider'
-                    />    
-                </View>
+            <View style={{flex: 0, flexDirection: 'row', width: '100%', justifyContent: 'center', position: 'relative'}}>
+                <MoodSquare style={{width:'70%', marginRight: '10%'}}/>
+                <SliderWithDescriptor
+                    text='Feeling'
+                    id='MoodTrackerVerticalSlider'
+                    width='70%'
+                />    
             </View>
             <SliderWithDescriptor 
                 text='Intensity'
                 id='MoodTrackerHorizontalSlider'
+                width='70%'
+                marginRight='10%'
             />
         </View>
     );
