@@ -4,12 +4,25 @@ import { Svg, Defs, RadialGradient, Stop, Circle } from 'react-native-svg';
 import Star from '../components/Star';
 import DashedLine from '../components/DashedLine'
 
+const getRandomArray = (n) => {
+  const arr = [];
+  for(let i = 0; i < n; i++) {
+    arr.push(Math.random());
+  }
+  return arr;
+}
+
+var selectedIndex = 14;
+
 const Constellation = () => {
   const numRectangles = 14;
   const minstarSize = 20;
   const maxstarSize = 50;
-  const minVerticalPosition = 10;
-  const maxVerticalPosition = 50;
+  const minVerticalPosition = 25;
+  const maxVerticalPosition = 75;
+
+  const feelings = getRandomArray(numRectangles);
+  const intensities = getRandomArray(numRectangles);
 
   const scrollViewRef = useRef(null);
   const [stars, setstars] = useState([]);
@@ -19,25 +32,40 @@ const Constellation = () => {
     scrollToRight();
   }, []);
 
+  const convertToHexColor = (arousal, valence) => {
+    const angle = Math.atan2(valence - 0.5, arousal - 0.5) + Math.PI;
+    const degrees = (angle * 180) / Math.PI;
+    const hue = degrees;
+    const saturation = 100;
+    const lightness = 50;
+
+    function hslToHex(h, s, l) {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+      };
+      return `#${f(0)}${f(8)}${f(4)}`;
+    };
+  
+    return hslToHex(hue, saturation, lightness);
+  };
+
   const generatestars = () => {
-    const sizes = [20, 20, 40, 20, 20, 20, 40, 20, 20, 20, 30, 40, 20, 50];
-    const positions = [10, 20, 30, 50, 20, 10, 20, 30, 50, 20, 10, 20, 40, 40];
-    const colors = [
-      '#FF0000',
-      '#00FF00',
-      '#0000FF',
-      '#FFFF00',
-      '#00FFFF',
-      '#FF00FF',
-      '#C0C0C0',
-      '#808080',
-      '#800000',
-      '#808000',
-      '#008000',
-      '#800080',
-      '#008080',
-      '#000080',
-    ];
+    const sizes = [];
+    const positions = [];
+    const colors = [];
+    for(let i = 0; i < numRectangles; i++)
+      sizes.push(minstarSize + (maxstarSize - minstarSize) * intensities[i]);
+    for(let i = 0; i < numRectangles; i++) {
+      const pos = minVerticalPosition + (maxVerticalPosition - minVerticalPosition) * feelings[i];
+      positions.push(pos - sizes[i] / 2);
+    }
+    for(let i = 0; i < numRectangles; i++)
+      colors.push(convertToHexColor(feelings[i], intensities[i]));
+
     const starsAttrs = [];
     for (let i = 0; i < numRectangles; i++) {
       const size = sizes[i];
@@ -76,6 +104,14 @@ const Constellation = () => {
     scrollViewRef.current.scrollToEnd({ animated: false });
   };  
 
+  const selectCurrentRectangle = (event) => {
+    const x = event.nativeEvent.contentOffset.x;
+    const index = Math.round(x / styles.rectSize.width);
+    // 7 is for number of days of a week
+    selectedIndex = index + 7;
+    console.log(selectedIndex);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -84,6 +120,7 @@ const Constellation = () => {
         ref={scrollViewRef}
         onContentSizeChange={scrollToRight}
         onLayout={scrollToRight}
+        onMomentumScrollEnd={selectCurrentRectangle}
         decelerationRate={0}
         snapToInterval={styles.rectSize.width}
         snapToAlignment={"right"}
