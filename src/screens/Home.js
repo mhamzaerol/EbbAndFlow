@@ -12,7 +12,7 @@ function Home() {
             <Constellation />
             <HomeBackground>
                 <Sun style={styles.sun}/>
-                <OceanWave />
+                <OceanWave feeling={0.2} intensity={0}/>
             </HomeBackground>
         </View>
     );

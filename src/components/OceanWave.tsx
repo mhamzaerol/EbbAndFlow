@@ -101,6 +101,7 @@ export const OceanWave = (props) => {
       </Canvas>
       <Animatable.View
         animation={waveAnimation}
+        duration={1500}
         iterationCount="infinite"
         style={styles.boat}
       >
