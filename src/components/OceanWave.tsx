@@ -38,7 +38,6 @@ const minSpeed = 600;
 const maxSpeed = 1400;
 const minAmplitude = 10;
 const maxAmplitude = 40;
-// const speed = 1000;
 
 export const OceanWave = (props) => {
   const [feeling, intensity] = [props.feeling, props.intensity];
