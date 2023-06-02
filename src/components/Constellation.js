@@ -84,6 +84,9 @@ const Constellation = () => {
         ref={scrollViewRef}
         onContentSizeChange={scrollToRight}
         onLayout={scrollToRight}
+        decelerationRate={0}
+        snapToInterval={styles.rectSize.width}
+        snapToAlignment={"right"}
       >
         <View style={styles.rectangleRow}>
           {stars.map((attrs, index) => (
