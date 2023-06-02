@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
   container: {
     height: 90,
     width: '100%',
+    zIndex: 2,
   },
   rectangleRow: {
     flexDirection: 'row',
