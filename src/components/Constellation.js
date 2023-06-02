@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { Svg, Defs, RadialGradient, Stop, Circle } from 'react-native-svg';
+import Star from '../components/Star';
 
 const RectangleRow = () => {
   const numRectangles = 14;
@@ -18,7 +20,7 @@ const RectangleRow = () => {
 
   const generateCircles = () => {
     const sizes = [10, 20, 30, 10, 10, 20, 30, 10, 10, 20, 30, 10, 10, 20];
-    const positions = [10, 20, 30, 50, 20, 10, 20, 30, 50, 20, 10, 20, 30, 50];
+    const positions = [10, 20, 30, 50, 20, 10, 20, 30, 50, 20, 10, 20, 30, 0];
     const colors = [
       '#FF0000',
       '#00FF00',
@@ -66,17 +68,9 @@ const RectangleRow = () => {
         <View style={styles.rectangleRow}>
           {circles.map((attrs, index) => (
             <View key={index} style={styles.rectangle}>
-              <View
-                style={[
-                  styles.circle,
-                  {
-                    width: attrs.size,
-                    height: attrs.size,
-                    backgroundColor: attrs.color,
-                    top: attrs.position,
-                  },
-                ]}
-              />
+              <View style={{position: 'absolute', top: attrs.position}}>
+                <Star width={attrs.size} height={attrs.size} color={attrs.color} />
+              </View>
             </View>
           ))}
         </View>
@@ -105,6 +99,7 @@ const styles = StyleSheet.create({
   },
   circle: {
     borderRadius: 100,
+    borderWidth: 1,
     position: 'absolute',
   },
 });
