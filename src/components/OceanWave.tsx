@@ -32,14 +32,21 @@ import Boat from "./Boat";
 const dimens = Dimensions.get("screen");
 const width = dimens.width;
 const frequency = 2;
-const initialAmplitude = 20;
 const verticalShiftConst = 400;
 const height = 800;
-const speed = 1000;
+const minSpeed = 600;
+const maxSpeed = 1400;
+const minAmplitude = 10;
+const maxAmplitude = 40;
+// const speed = 1000;
 
-export const OceanWave = () => {
+export const OceanWave = (props) => {
+  const [feeling, intensity] = [props.feeling, props.intensity];
+  const speed = minSpeed + (maxSpeed - minSpeed) * (1 - intensity);
+  const amplitude = useValue(minAmplitude + (maxAmplitude - minAmplitude) * intensity);
+  
   const verticalShift = useValue(verticalShiftConst);
-  const amplitude = useValue(initialAmplitude);
+  // const amplitude = useValue(initialAmplitude);
   const clock = useClockValue();
 
   const createWavePath = (phase = 20) => {
@@ -52,7 +59,7 @@ export const OceanWave = () => {
       ];
     });
 
-    const shiftedPoints = points.slice(0, 400) as [
+    const shiftedPoints = points.slice(0, 600) as [
       number,
       number
     ][];
@@ -96,7 +103,6 @@ export const OceanWave = () => {
         animation={waveAnimation}
         iterationCount="infinite"
         style={styles.boat}
-
       >
         <Boat />
       </Animatable.View>
