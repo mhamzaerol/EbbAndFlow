@@ -11,12 +11,8 @@ function Home() {
         <View style={styles.container}>
             <Constellation />
             <HomeBackground>
-                <Sun />
-                <Boat />
-                <View style={{ flex: 1 }}>
-                    <OceanWave />
-                    {/* Other components */}
-                </View>
+                <Sun style={styles.sun}/>
+                <OceanWave />
             </HomeBackground>
         </View>
     );
@@ -27,6 +23,11 @@ const styles = StyleSheet.create({
         marginTop: 60,
         flex: 1,
         flexDirection: 'column'
+    },
+    sun: {
+        position: 'absolute',
+        top: 20,
+        left: 20,
     }
 });
 
