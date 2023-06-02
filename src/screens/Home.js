@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import RectangleRow from '../components/Constellation';
+import Constellation from '../components/Constellation';
 import HomeBackground from '../components/HomeBackground';
 import Boat from '../components/Boat';
 import Sun from '../components/Sun'
@@ -9,7 +9,7 @@ import OceanWave from '../components/OceanWave';
 function Home() {
     return (
         <View style={styles.container}>
-            <RectangleRow />
+            <Constellation />
             <HomeBackground>
                 <Sun />
                 <Boat />
