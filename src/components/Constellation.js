@@ -103,7 +103,7 @@ const Constellation = () => {
                     style={styles.rectSize}/>
                 </View>
               }
-              <View style={{position: 'absolute', top: attrs.position}}>
+              <View style={{position: 'absolute', top: attrs.position, zIndex:1}}>
                 <Star width={attrs.size} height={attrs.size} color={attrs.color} />
               </View>
               {attrs.nextPos != -1 && 
