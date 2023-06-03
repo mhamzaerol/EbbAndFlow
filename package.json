@@ -11,11 +11,15 @@
   "dependencies": {
     "@expo/webpack-config": "^18.0.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "css-select": "^5.1.0",
+    "css-tree": "^2.3.1",
     "expo": "~48.0.15",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.8",
+    "react-native-calendars": "^1.1298.0",
+    "react-native-svg": "13.4.0",
     "react-native-web": "~0.18.10",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1"
