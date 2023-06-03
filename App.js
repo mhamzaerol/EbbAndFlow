@@ -1,13 +1,53 @@
-import React from 'react';
-// import Home from './src/screens/Home';
-// import Calendar from './src/screens/Calendar';
-import WriteDiary from './src/screens/WriteDiary';
+import React, {useEffect} from 'react';
+import { Provider, useSelector } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { store } from 'src/redux/store';
+import WriteDiary from 'src/screens/WriteDiary';
+import Home from 'src/screens/Home';
+import { MoodTracker } from 'src/screens/MoodTracker';
+// import MrSeagull from 'src/screens/MrSeagull';
+// import MainApp as Calendar from 'src/screens/Calendar';
+
+const Stack = createStackNavigator();
+
+const MyStack = () => {
+
+  const appPage = useSelector(store => store.appPageReducer.temporaryData.AppViewData.CurrentPage);
+
+  useEffect(() => {
+    console.log("App.js: appPage = " + appPage)
+    navigationRef.current?.navigate(appPage);
+  }, [appPage]);
+
+  return (
+    // make the view come from above
+      <Stack.Navigator screenOptions={{ headerShown: false}}>
+        <Stack.Screen name="Home" component={Home} />
+        {/* <Stack.Screen name="Calendar" component={Calendar} /> */}
+        <Stack.Screen name="MoodTracker" component={MoodTracker} />
+        <Stack.Screen name="WriteDiary" component={WriteDiary} />
+        {/* <Stack.Screen name="MrSeagull" component={MrSeagull} /> */}
+      </Stack.Navigator>
+  );
+
+}
+
+export const navigationRef = React.createRef();
+
+export function navigate(name, params) {
+  navigationRef.current?.navigate(name, params);
+}
 
 export default function App() {
   
   return (
-    <SafeAreaView>
-    <WriteDiary />
-</SafeAreaView>  );
+    <Provider store={store}>
+      <NavigationContainer ref={navigationRef}>
+        <MyStack />
+      </NavigationContainer>
+    </Provider>
+  );
+
 }

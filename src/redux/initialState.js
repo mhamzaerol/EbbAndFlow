@@ -16,7 +16,6 @@ export const initialState = {
         MoodTrackerViewData: {
             MoodTrackerHorizontalSlider: 0,
             MoodTrackerVerticalSlider: 0,
-            PrevPage: null,
             CurDate: null,
         },
         MrSeagullViewData: {
@@ -25,5 +24,9 @@ export const initialState = {
         },
         WriteDiaryViewData: {
         },
+        AppViewData: {
+            CurrentPage: 'Home',
+            PrevPage: null,
+        }
     }
 }

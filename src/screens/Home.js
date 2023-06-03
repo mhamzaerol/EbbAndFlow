@@ -6,16 +6,27 @@ import Boat from '../components/Boat';
 import Sun from '../components/Sun'
 import Cloud from '../components/Cloud';
 import OceanWave from '../components/OceanWave';
+import { useDispatch } from 'react-redux';
+import { TouchableWithoutFeedback } from 'react-native';
+import { setAppPage } from 'src/redux/actions'
 
 function Home() {
+
+    const dispatch = useDispatch();
 
     return (
         <View style={styles.container}>
             <Constellation />
-            <View style={styles.clear}/>
+            <TouchableWithoutFeedback onPress={() =>
+                dispatch(
+                    setAppPage('MoodTracker')
+                )
+            }>
+                <View style={styles.clear} />
+            </TouchableWithoutFeedback>
             <HomeBackground>
-                <Sun style={styles.sun}/>
-                <OceanWave feeling={0.2} intensity={0}/>
+                <Sun style={styles.sun} />
+                <OceanWave feeling={0.2} intensity={0} />
             </HomeBackground>
         </View>
         // <View style={styles.container}>

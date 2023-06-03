@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import Svg, { Defs, Rect, LinearGradient, Stop } from 'react-native-svg';
+import { useDispatch } from 'react-redux';
+import { TouchableWithoutFeedback } from 'react-native';
 
 const FROM_COLOR = '#9FE3FF';
 const TO_COLOR = '#E4F7FF';
