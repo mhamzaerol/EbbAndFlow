@@ -46,7 +46,7 @@ export default function ChatBotScreen({ navigation }) {
       <View style={styles.iconsContainer}>
         <BackIcon />
         <TouchableOpacity onPress={() => console.log("Exit Clicked")}>
-        <Image source={require('./assets/cross.png')} />
+        <Image source={require('assets/cross.png')} />
         </TouchableOpacity>
       </View>
 
@@ -74,7 +74,7 @@ export default function ChatBotScreen({ navigation }) {
           {/* <Button title="Send" onPress={sendMessage} /> */}
           <TouchableOpacity onPress={sendMessage}>
             <Image
-              source={require('./assets/send.png')}
+              source={require('assets/send.png')}
               style={{ width: 30, height: 30, marginTop: 10, marginLeft: 10 }} // adjust the size as needed
               />
           </TouchableOpacity>
