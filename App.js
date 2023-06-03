@@ -8,7 +8,7 @@ import WriteDiary from 'src/screens/WriteDiary';
 import Home from 'src/screens/Home';
 import { MoodTracker } from 'src/screens/MoodTracker';
 // import MrSeagull from 'src/screens/MrSeagull';
-// import MainApp as Calendar from 'src/screens/Calendar';
+import Calendar from 'src/screens/Calendar';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +25,7 @@ const MyStack = () => {
     // make the view come from above
       <Stack.Navigator screenOptions={{ headerShown: false}}>
         <Stack.Screen name="Home" component={Home} />
-        {/* <Stack.Screen name="Calendar" component={Calendar} /> */}
+        <Stack.Screen name="Calendar" component={Calendar} />
         <Stack.Screen name="MoodTracker" component={MoodTracker} />
         <Stack.Screen name="WriteDiary" component={WriteDiary} />
         {/* <Stack.Screen name="MrSeagull" component={MrSeagull} /> */}

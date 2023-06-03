@@ -1,5 +1,7 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
+import { useDispatch, useSelector } from 'react-redux';
+import { setAppPage } from 'src/redux/actions';
 
 export function GoBackArrowIcon(props) {
   return (
@@ -9,7 +11,6 @@ export function GoBackArrowIcon(props) {
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
       <Path
         fillRule="evenodd"

@@ -3,6 +3,9 @@ import { View, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { Svg, Defs, RadialGradient, Stop, Circle } from 'react-native-svg';
 import Star from '../components/Star';
 import DashedLine from '../components/DashedLine'
+import { setAppPage } from 'src/redux/actions';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const getRandomArray = (n) => {
   const arr = [];
@@ -26,6 +29,8 @@ const Constellation = () => {
 
   const scrollViewRef = useRef(null);
   const [stars, setstars] = useState([]);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     generatestars();
@@ -112,8 +117,22 @@ const Constellation = () => {
     console.log(selectedIndex);
   };
 
+  const CurrentPage = useSelector(store => store.appPageReducer.temporaryData.AppViewData.CurrentPage);
+
   return (
     <View style={styles.container}>
+      <ScrollView
+        vertical
+        showsVerticalScrollIndicator={false}
+        onScroll={(event) => {
+          if(event.nativeEvent.contentOffset.y < -10) {
+            if(CurrentPage !== 'Calendar') {
+              dispatch(setAppPage('Calendar'));
+            }
+          }
+        }}
+        scrollEventThrottle={256}
+      >
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -158,6 +177,7 @@ const Constellation = () => {
             </View>
           ))}
         </View>
+      </ScrollView>
       </ScrollView>
     </View>
   );
