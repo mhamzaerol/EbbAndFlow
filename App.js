@@ -1,9 +1,9 @@
 import React from 'react';
-import Calendar from './src/screens/Calendar.js';  // update this path to wherever your file is located
-import ChatBotScreen from './src/screens/MrSeagull.js'
+import Home from './src/screens/Home';
 
 export default function App() {
+  
   return (
-    <ChatBotScreen />
+     <Home/>
   );
 }
