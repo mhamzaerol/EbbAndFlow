@@ -27,7 +27,7 @@ export function SliderWithDescriptor(props) {
     }
 
     // redux
-    const sliderValue = useSelector((state) => state.sliderValueReducer.temporaryData.MoodTrackerViewData[finalProps.id]);
+    const sliderValue = useSelector((store) => store.sliderValueReducer.temporaryData.MoodTrackerViewData[finalProps.id]);
     const dispatch = useDispatch();
 
     // when initialized, set the slider value to the default value

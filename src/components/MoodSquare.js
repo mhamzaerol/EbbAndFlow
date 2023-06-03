@@ -28,10 +28,10 @@ export function MoodSquare(props) {
     // TODO: Implement adaptive shaping for the face
 
     const cx = useSelector(
-        (state) => state.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerHorizontalSlider
+        (store) => store.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerHorizontalSlider
     );
     const cy = useSelector(
-        (state) => state.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerVerticalSlider
+        (store) => store.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerVerticalSlider
     );
 
     const [faceRadius, setFaceRadius] = useState( (cx / 100.0 * (finalProps.maxFaceRadius - finalProps.minFaceRadius) + finalProps.minFaceRadius) );
