@@ -15,7 +15,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true//,
+      // "infoPlist": {
+      //   "UIRequiresFullScreen": true,
+      //   "UIViewControllerBasedStatusBarAppearance": false
+      // }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +28,12 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "build": {
+        "babel": {
+          "include": ["@miblanchard/react-native-slider"]            
+        }
+      }
     }
   }
 }
