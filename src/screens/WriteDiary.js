@@ -55,8 +55,8 @@ const JournalPage = () => {
       />
       
       <View style ={styles.images}>
-          <Image style ={styles.saveImg1}  source={require('/Users/nursultansoodonbekov/Desktop/AwesomeApp/AwesomeProject/images/icons8-boat-96.png')}/>
-          <Image style ={styles.saveImg2}  source={require('/Users/nursultansoodonbekov/Desktop/AwesomeApp/AwesomeProject/images/icons8-seagull-100.png')}/>
+          <Image style ={styles.saveImg1}  source={require('images/icons8-boat-96.png')}/>
+          <Image style ={styles.saveImg2}  source={require('images/icons8-seagull-100.png')}/>
 
       </View>
 
@@ -76,9 +76,9 @@ const JournalPage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 32,
-    height:50
+    // height:50
     },
   title:{
     height:50,
