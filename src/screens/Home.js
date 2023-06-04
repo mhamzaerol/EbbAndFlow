@@ -22,11 +22,13 @@ function Home() {
                     goNextPage('MoodTracker')
                 )
             }>
-                <View style={styles.clear} />
+                {/* <View style={styles.clear} /> */}
+                <View style={styles.gloomy}/>
             </TouchableWithoutFeedback>
             <HomeBackground>
-                <Sun style={styles.sun} />
-                <OceanWave feeling={0.2} intensity={0} />
+                {/* <Sun style={styles.sun} /> */}
+                <Cloud style={styles.cloud} fill='gray'/>
+                <OceanWave feeling={0.2} intensity={1} />
             </HomeBackground>
         </View>
         // <View style={styles.container}>

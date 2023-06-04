@@ -24,7 +24,9 @@ const MyStack = () => {
 
   return (
     // make the view come from above
-      <Stack.Navigator screenOptions={{ headerShown: false}}>
+      <Stack.Navigator screenOptions={{ 
+        headerShown: false,
+      }}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Calendar" component={Calendar} />
         <Stack.Screen name="MoodTracker" component={MoodTracker} />

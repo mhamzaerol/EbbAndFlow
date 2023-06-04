@@ -21,7 +21,7 @@ export function AppCalendar() {
           borderWidth: 1,
           borderColor: 'gray',
           height: 350,
-          marginTop: 100
+          marginTop: 75,
         }}
         onDayPress={day => {
           setSelected(day.dateString);
@@ -38,13 +38,13 @@ export function AppCalendar() {
           borderColor: 'gray',
           backgroundColor: 'white'
         }}>
-          <Text style={{ marginBottom: 10 }}>Date: {selected}</Text>
-          <Text style={{ marginBottom: 10 }}>No diary yet.</Text>
+          <Text style={{ marginBottom: 10 , fontSize: 16}}>Date: {selected}</Text>
+          <Text style={{ marginBottom: 10 , fontSize: 16}}>No diary yet.</Text>
           <TouchableOpacity
             style={{ alignSelf: 'center', backgroundColor: 'black', padding: 10, borderRadius: 5 }}
             onPress={() => dispatch(goNextPage('WriteDiary'))}
           >
-            <Text style={{ color: 'white' }}>Write Diary</Text>
+            <Text style={{ color: 'white', fontSize: 20}}>Write Diary</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -57,7 +57,7 @@ function MainApp() {
   const dispatch = useDispatch();
   
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor:'white', }}>
       <View style={styles.iconsContainer}>
         <TouchableOpacity
           onPress={() => { dispatch(goPrevPage()) }}>
