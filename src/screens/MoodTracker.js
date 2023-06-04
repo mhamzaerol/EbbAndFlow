@@ -6,20 +6,20 @@ import { MoodEdit } from 'src/components/MoodEdit';
 import { NotePencilIcon } from 'src/components/svg/NotePencilIcon';
 import { ReturnIcon } from 'src/components/svg/ReturnIcon';
 import { useDispatch } from 'react-redux';
-import { setAppPage } from 'src/redux/actions';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+import { goPrevPage } from 'src/redux/actions';
+import { goNextPage } from '../redux/actions';
 
 export function MoodTracker() {
 
     const dispatch = useDispatch();
-    const prevPage = useSelector(store => store.appPageReducer.temporaryData.AppViewData.PrevPage)
-
+    
     return (
         <SafeAreaView style={{ flex: 1, flexDirection: 'col', width: '100%', backgroundColor: 'white' }}>
             <View style={{ flex: 0.2, flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingHorizontal: 10, paddingVertical: 20 }}>
                 <TouchableOpacity
-                    onPress={() => { console.log('yeah'); dispatch(setAppPage(prevPage)) }}>
+                    onPress={() => { dispatch(goPrevPage()) }}>
                     <GoBackArrowIcon />
                 </TouchableOpacity>
                 <TouchableOpacity>
@@ -35,7 +35,7 @@ export function MoodTracker() {
             <View style={{ flex: 0.12, flexDirection: 'row', justifyContent: 'center', width: '100%', paddingHorizontal: 10, paddingVertical: 20 }}>
                 <TouchableOpacity 
                 style={{ flex: 0, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10, borderColor: 'black', borderWidth: 1 }}
-                onPress={() => dispatch(setAppPage('WriteDiary'))}
+                onPress={() => dispatch(goNextPage('WriteDiary'))}
                 >
                     <NotePencilIcon width='32' height='32' style={{ marginRight: 4 }} />
                     <Text style={{ fontSize: 20 }}>Write Diary</Text>
@@ -44,7 +44,7 @@ export function MoodTracker() {
                     flex: 0, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', borderRadius: 10, padding: 10, borderColor: 'black', borderWidth: 1
                 }}
                     onPress={() =>
-                        dispatch(setAppPage('Home'))
+                        dispatch(goNextPage('Home'))
                     }
                 >
                     <ReturnIcon width='32' height='32' style={{ marginRight: 4 }} />

@@ -1,23 +1,24 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
-import { useDispatch, useSelector } from 'react-redux';
 
-
-export function GoBackArrowIcon(props) {
+function CrossIcon(props) {
   return (
     <Svg
       width={48}
       height={48}
-      viewBox="0 0 48 48"
+      viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M31.06 7.94a1.5 1.5 0 010 2.12L17.122 24l13.94 13.94a1.5 1.5 0 01-2.122 2.12l-15-15a1.5 1.5 0 010-2.12l15-15a1.5 1.5 0 012.122 0z"
+        d="M6.293 6.293a1 1 0 011.414 0L16 14.586l8.293-8.293a1 1 0 111.414 1.414L17.414 16l8.293 8.293a1 1 0 01-1.414 1.414L16 17.414l-8.293 8.293a1 1 0 01-1.414-1.414L14.586 16 6.293 7.707a1 1 0 010-1.414z"
         fill="#002"
       />
     </Svg>
   )
 }
+
+export default CrossIcon

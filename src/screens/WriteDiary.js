@@ -1,48 +1,52 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Text, Image, TouchableHighlight } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+// import { AntDesign } from "@expo/vector-icons";
+import { GoBackArrowIcon } from "src/components/svg/GoBackArrowIcon";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { goPrevPage } from "src/redux/actions";
+import { TouchableOpacity } from "react-native";
+import {EraserIcon} from "src/components/svg/EraserIcon";
+import { goNextPage } from "src/redux/actions";
 
 const JournalPage = () => {
   const [title, setTitle] = useState("");
   const [entryText, setEntryText] = useState("");
   
-
+  const dispatch = useDispatch();
+  
   const handleSaveEntry = () => {
-    // Implement the logic to save the entry to a database or storage here
-    // For simplicity, we'll just log the entry text for now
-    console.log("Entry Text:", entryText);
-    // Reset the state after saving
-    setEntryText("");
+    dispatch(goNextPage('Home'));
   };
 
   const handleBack = () => {
-    // Go back to the previous screen
+    dispatch(goPrevPage());
   };
 
   const handleErase = () => {
     
   };
 
-  const handleChat = () => {};
+  const handleChat = () => {
+    dispatch(goNextPage('MrSeagull'));
+  };
 
   return (
     <View style={styles.container}>
       <View style={{marginBottom:20, top:40}}>
         <View style={styles.back}>
-          <TouchableHighlight onPress={handleBack}>
-            <AntDesign name="left" size={30}/>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={handleErase}>
-            <Image
-          style={{height:35, width:35}}
-          source={require("images/eraser_9.png")}
+          <TouchableOpacity onPress={handleBack}>
+            <GoBackArrowIcon/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleErase}>
+            <EraserIcon
         />
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       </View>
     
-      <View style={{ flexDirection: "row", justifyContent: "space-between", top:15}}>
-        <View style={{bottom:10, left:90}}>
+      <View style={{ flexDirection: "row", marginTop: 30}}>
+        <View style={{bottom:10, marginRight: 20}}>
           <Text style={{ fontSize: 20, }}>Title:</Text>
         </View>
 
@@ -51,7 +55,7 @@ const JournalPage = () => {
             style={{ fontSize: 18, right:10 }}
             placeholder="Write the title here"
             value={title}
-            onChangeText={(title) => setEntryText(setTitle)}
+            onChangeText={(title) => setTitle(title)}
            
           />
         </View>
@@ -78,20 +82,20 @@ const JournalPage = () => {
 
       <View style={styles.button}>
        
-        <TouchableHighlight onPress={handleSaveEntry}>
+        <TouchableOpacity onPress={handleSaveEntry}>
           <View style={styles.save}>
             <Text style={{ fontSize: 14, top:6, left:3 }}>
               Save & Exit
             </Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
 
-        <TouchableHighlight onPress={handleChat}>
+        <TouchableOpacity onPress={handleChat}>
           <View style={styles.talk}>
             <Text style={{ fontSize: 14, top:6, left:3 }}>Talk with</Text>
             <Text style={{ fontSize: 14, top:6, left:3 }}>Mr.Seagull</Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -104,14 +108,15 @@ const styles = StyleSheet.create({
     height: 50,
   },
   title: {
-    height: 50,
+    // height: 30,
+    marginBottom: 10,
     width: 220,
     borderColor: "gray",
     bottom:8,
   
   },
   input: {
-    height: 600,
+    flex: 1,
     borderWidth: 1,
     borderColor: "gray",
     bottom:0,

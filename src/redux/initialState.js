@@ -25,8 +25,9 @@ export const initialState = {
         WriteDiaryViewData: {
         },
         AppViewData: {
-            CurrentPage: 'Home',
-            PrevPage: null,
+            pageHistory: ['Home']
+            // CurrentPage: 'Home',
+            // PrevPage: null,
         }
     }
 }

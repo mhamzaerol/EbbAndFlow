@@ -1,29 +1,12 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, View, Button, Image, ScrollView, KeyboardAvoidingView, TouchableOpacity, Platform } from 'react-native';
 import Svg, { Path } from "react-native-svg";
-
-export function BackIcon(props) {
-  return (
-    <SafeAreaView>
-      <Svg
-        width={32}
-        height={32}
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        onPress={() => console.log("Back Clicked")}
-        {...props}
-      >
-        <Path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M20.707 5.293a1 1 0 010 1.414L11.414 16l9.293 9.293a1 1 0 01-1.414 1.414l-10-10a1 1 0 010-1.414l10-10a1 1 0 011.414 0z"
-          fill="#002"
-        />
-      </Svg>
-    </SafeAreaView>
-  )
-}
+import { GoBackArrowIcon } from 'src/components/svg/GoBackArrowIcon';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { goPrevPage } from 'src/redux/actions';
+import CrossIcon from 'src/components/svg/CrossIcon';
+import { goNextPage } from '../redux/actions';
 
 export default function ChatBotScreen({ navigation }) {
   const [messages, setMessages] = useState([]);
@@ -41,12 +24,16 @@ export default function ChatBotScreen({ navigation }) {
     }
   }
 
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.iconsContainer}>
-        <BackIcon />
-        <TouchableOpacity onPress={() => console.log("Exit Clicked")}>
-        <Image source={require('assets/cross.png')} />
+        <TouchableOpacity onPress={() => dispatch(goPrevPage())}>
+          <GoBackArrowIcon/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => dispatch(goNextPage('Calendar'))}>
+          <CrossIcon/>
         </TouchableOpacity>
       </View>
 

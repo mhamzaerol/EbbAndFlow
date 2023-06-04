@@ -1,4 +1,4 @@
-import { SET_SLIDER_VALUE, SET_APP_PAGE } from "src/redux/actions";
+import { SET_SLIDER_VALUE, GO_NEXT_PAGE, GO_PREV_PAGE } from "src/redux/actions";
 
 
 import { initialState } from 'src/redux/initialState';
@@ -23,15 +23,28 @@ export const sliderValueReducer = (state = initialState, action) => {
 
 export const appPageReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_APP_PAGE:
+        case GO_NEXT_PAGE:
             return {
                 ...state,
                 temporaryData: {
                     ...state.temporaryData,
                     AppViewData: {
                         ...state.temporaryData.AppViewData,
-                        CurrentPage: action.payload.pageName,
-                        PrevPage: state.temporaryData.AppViewData.CurrentPage,
+                        pageHistory: [
+                            ...state.temporaryData.AppViewData.pageHistory,
+                            action.payload.pageName
+                        ]
+                    }
+                }
+            };
+        case GO_PREV_PAGE:
+            return {
+                ...state,
+                temporaryData: {
+                    ...state.temporaryData,
+                    AppViewData: {
+                        ...state.temporaryData.AppViewData,
+                        pageHistory: state.temporaryData.AppViewData.pageHistory.slice(0, -1)
                     }
                 }
             };

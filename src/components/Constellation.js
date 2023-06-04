@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { Svg, Defs, RadialGradient, Stop, Circle } from 'react-native-svg';
 import Star from '../components/Star';
 import DashedLine from '../components/DashedLine'
-import { setAppPage } from 'src/redux/actions';
+import { goNextPage } from 'src/redux/actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
@@ -117,7 +117,7 @@ const Constellation = () => {
     console.log(selectedIndex);
   };
 
-  const CurrentPage = useSelector(store => store.appPageReducer.temporaryData.AppViewData.CurrentPage);
+  const CurrentPage = useSelector(store => store.appPageReducer.temporaryData.AppViewData.pageHistory.slice(-1)[0]);
 
   return (
     <View style={styles.container}>
@@ -127,7 +127,7 @@ const Constellation = () => {
         onScroll={(event) => {
           if(event.nativeEvent.contentOffset.y < -10) {
             if(CurrentPage !== 'Calendar') {
-              dispatch(setAppPage('Calendar'));
+              dispatch(goNextPage('Calendar'));
             }
           }
         }}

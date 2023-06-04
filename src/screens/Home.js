@@ -8,7 +8,7 @@ import Cloud from '../components/Cloud';
 import OceanWave from '../components/OceanWave';
 import { useDispatch } from 'react-redux';
 import { TouchableWithoutFeedback } from 'react-native';
-import { setAppPage } from 'src/redux/actions'
+import { goNextPage } from 'src/redux/actions'
 
 function Home() {
 
@@ -19,7 +19,7 @@ function Home() {
             <Constellation />
             <TouchableWithoutFeedback onPress={() =>
                 dispatch(
-                    setAppPage('MoodTracker')
+                    goNextPage('MoodTracker')
                 )
             }>
                 <View style={styles.clear} />
