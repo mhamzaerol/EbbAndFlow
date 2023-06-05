@@ -29,10 +29,10 @@ export function MoodSquare(props) {
 
     // TODO: Implement adaptive shaping for the face
 
-    const curDate = useSelector((store) => store.curDateReducer.temporaryData.curDate);
+    const curDate = useSelector((store) => store.temporaryData.curDate);
     const cx = useSelector(
         (store) => {
-            let moodRecord = store.moodRecordsReducer.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+            let moodRecord = store.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
             if (moodRecord.length > 0) {
                 return moodRecord[0].get('intensity');
             }
@@ -41,7 +41,7 @@ export function MoodSquare(props) {
     );
     const cy = useSelector(
         (store) => {
-            let moodRecord = store.moodRecordsReducer.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+            let moodRecord = store.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
             if (moodRecord.length > 0) {
                 return moodRecord[0].get('valence');
             }

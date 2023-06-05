@@ -1,6 +1,5 @@
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
-import { useDispatch, useSelector } from 'react-redux';
 
 
 export function GoBackArrowIcon(props) {

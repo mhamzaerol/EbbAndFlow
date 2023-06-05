@@ -1,52 +1,40 @@
-import { SET_SLIDER_VALUE, GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD } from "src/redux/actions";
-import { initialState } from 'src/redux/initialState';
+import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD } from "src/redux/actions";
+import { persistentInitialState, temporaryInitialState } from 'src/redux/initialState';
 
 // Persistent Data Reducers
-export const diaryRecordsReducer = (state = initialState, action) => {
+export const diaryRecordsReducer = (state = persistentInitialState.diaryRecords, action) => {
     switch (action.type) {
         default:
             return state;
     }
 }
 
-export const moodRecordsReducer = (state = initialState, action) => {
+export const moodRecordsReducer = (state = persistentInitialState.moodRecords, action) => {
     switch (action.type) {
         case SET_MOOD:
-            return {
-                ...state,
-                persistentData: {
-                    ...state.persistentData,
-                    moodRecords: state.persistentData.moodRecords.filter((moodRecord) => !moodRecord.check('date', action.payload.newMood.get('date'))).concat(action.payload.newMood)
-                }
-            };
+            return state.filter((moodRecord) => !moodRecord.check('date', action.payload.newMood.get('date'))).concat(action.payload.newMood);
         case DEL_MOOD:
-            return {
-                ...state,
-                persistentData: {
-                    ...state.persistentData,
-                    moodRecords: state.persistentData.moodRecords.filter((moodRecord) => !moodRecord.check('date', action.payload.date))
-                }
-            };
+            return state.filter((moodRecord) => !moodRecord.check('date', action.payload.date));
         default:
             return state;
     }
 }
 
-export const seagullChatsReducer = (state = initialState, action) => {
+export const seagullChatsReducer = (state = persistentInitialState.seagullChats, action) => {
     switch (action.type) {
         default:
             return state;
     }
 }
 
-export const fontSizeReducer = (state = initialState, action) => {
+export const fontSizeReducer = (state = persistentInitialState.fontSize, action) => {
     switch (action.type) {
         default:
             return state;
     }
 }
 
-export const requireAuthenticationReducer = (state = initialState, action) => {
+export const requireAuthenticationReducer = (state = persistentInitialState.requireAuthentication, action) => {
     switch (action.type) {
         default:
             return state;
@@ -54,41 +42,28 @@ export const requireAuthenticationReducer = (state = initialState, action) => {
 }
 
 // Temporary Data Reducers
-
-export const pageHistoryReducer = (state = initialState, action) => {
+export const pageHistoryReducer = (state = temporaryInitialState.pageHistory, action) => {
     switch (action.type) {
         case GO_NEXT_PAGE:
-            return {
+            return [
                 ...state,
-                temporaryData: {
-                    ...state.temporaryData,
-                    pageHistory: [
-                        ...state.temporaryData.pageHistory,
-                        action.payload.pageName
-                    ]
-                }
-            };
+                action.payload.pageName
+            ];
         case GO_PREV_PAGE:
-            return {
-                ...state,
-                temporaryData: {
-                    ...state.temporaryData,
-                    pageHistory: state.temporaryData.pageHistory.slice(0, -1)
-                }
-            };
+            return state.slice(0, -1);
         default:
             return state;
     }
 }
 
-export const isAuthenticatedReducer = (state = initialState, action) => {
+export const isAuthenticatedReducer = (state = temporaryInitialState.isAuthenticated, action) => {
     switch (action.type) {
         default:
             return state;
     }
 }
 
-export const curDateReducer = (state = initialState, action) => {
+export const curDateReducer = (state = temporaryInitialState.curDate, action) => {
     switch (action.type) {
         default:
             return state;

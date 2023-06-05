@@ -28,9 +28,9 @@ export function SliderWithDescriptor(props) {
     }
 
     // redux
-    const curDate = useSelector((store) => store.curDateReducer.temporaryData.curDate);
+    const curDate = useSelector((store) => store.temporaryData.curDate);
     const moodInfo = useSelector((store) => {
-        let moodRecords = store.moodRecordsReducer.persistentData.moodRecords;
+        let moodRecords = store.persistentData.moodRecords;
         moodRecords = moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
         if (moodRecords.length > 0) {
             console.log('Found!!');

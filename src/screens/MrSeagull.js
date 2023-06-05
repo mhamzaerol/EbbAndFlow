@@ -3,7 +3,6 @@ import { SafeAreaView, StyleSheet, Text, TextInput, View, Button, Image, ScrollV
 import Svg, { Path } from "react-native-svg";
 import { GoBackArrowIcon } from 'src/components/svg/GoBackArrowIcon';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import { goPrevPage } from 'src/redux/actions';
 import CrossIcon from 'src/components/svg/CrossIcon';
 import { goNextPage } from 'src/redux/actions';

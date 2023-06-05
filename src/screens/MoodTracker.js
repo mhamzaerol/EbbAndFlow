@@ -14,7 +14,7 @@ export function MoodTracker() {
 
     const dispatch = useDispatch();
 
-    const curDate = useSelector((store) => store.curDateReducer.temporaryData.curDate);
+    const curDate = useSelector((store) => store.temporaryData.curDate);
     
     return (
         <SafeAreaView style={{ flex: 1, flexDirection: 'col', width: '100%', backgroundColor: 'white' }}>

@@ -45,6 +45,16 @@ export class DiaryRecord {
     clone() {
         return new DiaryRecord(this.date, this.diaryTitle, this.diaryStr);
     }
+    toJSON() {
+        return {
+            class: 'DiaryRecord',
+            attr: {
+                date: this.date.toJSON(),
+                diaryTitle: this.diaryTitle,
+                diaryStr: this.diaryStr,
+            }
+        };
+    }
 }
 
 export class MoodRecord {
@@ -94,6 +104,16 @@ export class MoodRecord {
     }
     clone() {
         return new MoodRecord(this.date, this.intensity, this.valence);
+    }
+    toJSON() {
+        return {
+            class: 'MoodRecord',
+            attr: {
+                date: this.date.toJSON(),
+                intensity: this.intensity,
+                valence: this.valence,
+            }
+        };
     }
 }
 
@@ -153,5 +173,16 @@ export class SeagullChat {
     }
     clone() {
         return new SeagullChat(this.date, this.index, this.isMrSeagull, this.text);
+    }
+    toJSON() {
+        return {
+            class: 'SeagullChat',
+            attr: {
+                date: this.date.toJSON(),
+                index: this.index,
+                isMrSeagull: this.isMrSeagull,
+                text: this.text,
+            }
+        };
     }
 }
