@@ -1,19 +1,30 @@
-import { SET_SLIDER_VALUE, GO_NEXT_PAGE, GO_PREV_PAGE } from "src/redux/actions";
-
-
+import { SET_SLIDER_VALUE, GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD } from "src/redux/actions";
 import { initialState } from 'src/redux/initialState';
 
-export const sliderValueReducer = (state = initialState, action) => {
+// Persistent Data Reducers
+export const diaryRecordsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_SLIDER_VALUE:
+        default:
+            return state;
+    }
+}
+
+export const moodRecordsReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case SET_MOOD:
             return {
                 ...state,
-                temporaryData: {
-                    ...state.temporaryData,
-                    MoodTrackerViewData: {
-                        ...state.temporaryData.MoodTrackerViewData,
-                        [action.payload.sliderId]: action.payload.value
-                    }
+                persistentData: {
+                    ...state.persistentData,
+                    moodRecords: state.persistentData.moodRecords.filter((moodRecord) => !moodRecord.check('date', action.payload.newMood.get('date'))).concat(action.payload.newMood)
+                }
+            };
+        case DEL_MOOD:
+            return {
+                ...state,
+                persistentData: {
+                    ...state.persistentData,
+                    moodRecords: state.persistentData.moodRecords.filter((moodRecord) => !moodRecord.check('date', action.payload.date))
                 }
             };
         default:
@@ -21,20 +32,40 @@ export const sliderValueReducer = (state = initialState, action) => {
     }
 }
 
-export const appPageReducer = (state = initialState, action) => {
+export const seagullChatsReducer = (state = initialState, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+}
+
+export const fontSizeReducer = (state = initialState, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+}
+
+export const requireAuthenticationReducer = (state = initialState, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+}
+
+// Temporary Data Reducers
+
+export const pageHistoryReducer = (state = initialState, action) => {
     switch (action.type) {
         case GO_NEXT_PAGE:
             return {
                 ...state,
                 temporaryData: {
                     ...state.temporaryData,
-                    AppViewData: {
-                        ...state.temporaryData.AppViewData,
-                        pageHistory: [
-                            ...state.temporaryData.AppViewData.pageHistory,
-                            action.payload.pageName
-                        ]
-                    }
+                    pageHistory: [
+                        ...state.temporaryData.pageHistory,
+                        action.payload.pageName
+                    ]
                 }
             };
         case GO_PREV_PAGE:
@@ -42,12 +73,23 @@ export const appPageReducer = (state = initialState, action) => {
                 ...state,
                 temporaryData: {
                     ...state.temporaryData,
-                    AppViewData: {
-                        ...state.temporaryData.AppViewData,
-                        pageHistory: state.temporaryData.AppViewData.pageHistory.slice(0, -1)
-                    }
+                    pageHistory: state.temporaryData.pageHistory.slice(0, -1)
                 }
             };
+        default:
+            return state;
+    }
+}
+
+export const isAuthenticatedReducer = (state = initialState, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+}
+
+export const curDateReducer = (state = initialState, action) => {
+    switch (action.type) {
         default:
             return state;
     }

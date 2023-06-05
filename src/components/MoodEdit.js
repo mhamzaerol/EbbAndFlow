@@ -11,13 +11,13 @@ export function MoodEdit() {
                 <MoodSquare style={{width:'70%', marginRight: '10%'}}/>
                 <SliderWithDescriptor
                     text='Feeling'
-                    id='MoodTrackerVerticalSlider'
+                    id='valence'
                     width='70%'
                 />    
             </View>
             <SliderWithDescriptor 
                 text='Intensity'
-                id='MoodTrackerHorizontalSlider'
+                id='intensity'
                 width='70%'
                 marginRight='10%'
             />

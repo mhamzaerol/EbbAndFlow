@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSliderValue } from 'src/redux/actions';
+import { setMood } from 'src/redux/actions';
+import {MoodRecord} from 'src/redux/datatypes';
 
 const defaultProps = {
     minimumValue: 0,
@@ -13,7 +14,7 @@ const defaultProps = {
     thumbTintColor: '#000000',
     text: 'SliderWithDescriptor',
     transformAngle: '0deg',
-    id: 'MoodTrackerHorizontalSlider',
+    id: 'intensity',
     width: 250,
     marginRight: 0,
 }
@@ -27,24 +28,39 @@ export function SliderWithDescriptor(props) {
     }
 
     // redux
-    const sliderValue = useSelector((store) => store.sliderValueReducer.temporaryData.MoodTrackerViewData[finalProps.id]);
+    const curDate = useSelector((store) => store.curDateReducer.temporaryData.curDate);
+    const moodInfo = useSelector((store) => {
+        let moodRecords = store.moodRecordsReducer.persistentData.moodRecords;
+        moodRecords = moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+        if (moodRecords.length > 0) {
+            console.log('Found!!');
+            return moodRecords[0];
+        }
+        return new MoodRecord(curDate, finalProps.minimumValue, finalProps.minimumValue);
+    });
+
     const dispatch = useDispatch();
 
-    // when initialized, set the slider value to the default value
-    useState(() => {
-        dispatch(setSliderValue(finalProps.id, finalProps.minimumValue));
-    }, []);
+    const updateMood = (val) => {
+        let newMoodInfo = moodInfo.clone();
+        newMoodInfo.set(finalProps.id, val);
+        dispatch(
+            setMood(        
+                newMoodInfo
+            )   
+        )
+    };
 
-    if (finalProps.id === 'MoodTrackerVerticalSlider') {
+    if (finalProps.id === 'valence') {
         finalProps.transformAngle = '270deg'
     }
 
     // view
     return (
-        <View style={{width: finalProps.width, transform: [{ rotate: finalProps.transformAngle }], position: finalProps.id === 'MoodTrackerVerticalSlider' ? 'absolute' : 'relative', bottom: finalProps.id === 'MoodTrackerVerticalSlider' ? '40%' : 0, right: finalProps.id === 'MoodTrackerVerticalSlider' ? '-22.5%' : 0, marginRight: finalProps.marginRight}}>
+        <View style={{width: finalProps.width, transform: [{ rotate: finalProps.transformAngle }], position: finalProps.id === 'valence' ? 'absolute' : 'relative', bottom: finalProps.id === 'valence' ? '40%' : 0, right: finalProps.id === 'valence' ? '-22.5%' : 0, marginRight: finalProps.marginRight}}>
             <View style={{ flex: 0, flexDirection: 'column'}}>
-                <Slider {...finalProps} style={{width: '100%'}} onValueChange={(val) => { dispatch(setSliderValue(finalProps.id, val)) }} value={sliderValue} />
-                <Text style={{ alignSelf: 'center', fontSize: 16 }}>{finalProps.text}: {sliderValue}</Text>
+                <Slider {...finalProps} style={{width: '100%'}} onValueChange={(val) => { updateMood(val) }} value={moodInfo.get(finalProps.id)} />
+                <Text style={{ alignSelf: 'center', fontSize: 16 }}>{finalProps.text}: {moodInfo.get(finalProps.id)}</Text>
             </View>
         </View>
     );

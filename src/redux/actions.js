@@ -1,7 +1,26 @@
-// first, define the types
+// Persistent Data Actions
+export const SET_MOOD = 'SET_MOOD';
+export const DEL_MOOD = 'DEL_MOOD';
+
+export const setMood = (newMood) => dispatch => {
+    dispatch({
+        type: SET_MOOD,
+        payload: { newMood },
+    });
+};
+
+export const delMood = (date) => dispatch => {
+    dispatch({
+        type: DEL_MOOD,
+        payload: { date },
+    });
+};
+
+// Temporary Data Actions
 export const SET_SLIDER_VALUE = 'SET_SLIDER_VALUE';
 export const GO_NEXT_PAGE = 'GO_NEXT_PAGE';
 export const GO_PREV_PAGE = 'GO_PREV_PAGE';
+
 
 // then, define the actions
 export const setSliderValue = (sliderId, value) => dispatch => {

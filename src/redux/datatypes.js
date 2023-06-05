@@ -10,23 +10,40 @@ export class DiaryRecord {
         this.diaryTitle = diaryTitle;
         this.diaryStr = diaryStr;
     }
-    getDiaryTitle() {
-        return this.diaryTitle;
+    get(key) {
+        if (key === 'date') {
+            return this.date;
+        } else if (key === 'diaryTitle') {
+            return this.diaryTitle;
+        } else if (key === 'diaryStr') {
+            return this.diaryStr;
+        }
     }
-    setDiaryTitle(newTitle) {
-        this.diaryTitle = newTitle;
+    set(key, value) {
+        if (key === 'date') {
+            this.date = value;
+        }
+        if (key === 'diaryTitle') {
+            this.diaryTitle = value;
+        }
+        if (key === 'diaryStr') {
+            this.diaryStr = value;
+        }
     }
-    getDiaryStr() {
-        return this.diaryStr;
+    check(key, value) {
+        if (key === 'date') {
+            // only check day, month, year
+            return this.date.getDate() === value.getDate() && this.date.getMonth() === value.getMonth() && this.date.getFullYear() === value.getFullYear();
+        }
+        if (key === 'diaryTitle') {
+            return this.diaryTitle === value;
+        }
+        if (key === 'diaryStr') {
+            return this.diaryStr === value;
+        }
     }
-    setDiaryStr(newStr) {
-        this.diaryStr = newStr;
-    }
-    getDate() {
-        return this.date;
-    }
-    setDate(newDate) {
-        this.date = newDate;
+    clone() {
+        return new DiaryRecord(this.date, this.diaryTitle, this.diaryStr);
     }
 }
 
@@ -43,54 +60,98 @@ export class MoodRecord {
         this.intensity = intensity;
         this.valence = valence;
     }
-    getDate() {
-        return this.date;
+    get(key) {
+        if (key === 'date') {
+            return this.date;
+        } else if (key === 'intensity') {
+            return this.intensity;
+        } else if (key === 'valence') {
+            return this.valence;
+        }
     }
-    setDate(newDate) {
-        this.date = newDate;
+    set(key, value) {
+        if (key === 'date') {
+            this.date = value;
+        }
+        if (key === 'intensity') {
+            this.intensity = value;
+        }
+        if (key === 'valence') {
+            this.valence = value;
+        }
     }
-    getIntensity() {
-        return this.intensity;
+    check(key, value) {
+        if (key === 'date') {
+            // only check day, month, year
+            return this.date.getDate() === value.getDate() && this.date.getMonth() === value.getMonth() && this.date.getFullYear() === value.getFullYear();
+        }
+        if (key === 'intensity') {
+            return this.intensity === value;
+        }
+        if (key === 'valence') {
+            return this.valence === value;
+        }
     }
-    setIntensity(newIntensity) {
-        this.intensity = newIntensity;
-    }
-    getValence() {
-        return this.valence;
-    }
-    setValence(newValence) {
-        this.valence = newValence;
+    clone() {
+        return new MoodRecord(this.date, this.intensity, this.valence);
     }
 }
 
 export class SeagullChat {
     /* 
     SeagullChat: Object
-        date: Date,
-        timeStamp: Date, 
+        date: Date
+        index: Number
+        isMrSeagull: Boolean
         text: String
     */
-    constructor(date, timeStamp, text) {
+    constructor(date, index, isMrSeagull, text) {
         this.date = date;
-        this.timeStamp = timeStamp;
+        this.index = index;
+        this.isMrSeagull = isMrSeagull;
         this.text = text;
     }
-    getDate() {
-        return this.date;
+    get(key) {
+        if (key === 'date') {
+            return this.date;
+        } else if (key === 'index') {
+            return this.index;
+        } else if (key === 'isMrSeagull') {
+            return this.isMrSeagull;
+        } else if (key === 'text') {
+            return this.text;
+        }
     }
-    setDate(newDate) {
-        this.date = newDate;
+    set(key, value) {
+        if (key === 'date') {
+            this.date = value;
+        }
+        if (key === 'index') {
+            this.index = value;
+        }
+        if (key === 'isMrSeagull') {
+            this.isMrSeagull = value;
+        }
+        if (key === 'text') {
+            this.text = value;
+        }
     }
-    getTimeStamp() {
-        return this.timeStamp;
+    check(key, value) {
+        if (key === 'date') {
+            // only check day, month, year
+            return this.date.getDate() === value.getDate() && this.date.getMonth() === value.getMonth() && this.date.getFullYear() === value.getFullYear();
+        }
+        if (key === 'index') {
+            return this.index === value;
+        }
+        if (key === 'isMrSeagull') {
+            return this.isMrSeagull === value;
+        }
+        if (key === 'text') {
+            return this.text === value;
+        }
     }
-    setTimeStamp(newTimeStamp) {
-        this.timeStamp = newTimeStamp;
-    }
-    getText() {
-        return this.text;
-    }
-    setText(newText) {
-        this.text = newText;
+    clone() {
+        return new SeagullChat(this.date, this.index, this.isMrSeagull, this.text);
     }
 }

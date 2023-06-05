@@ -8,12 +8,13 @@ import { ReturnIcon } from 'src/components/svg/ReturnIcon';
 import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
-import { goPrevPage } from 'src/redux/actions';
-import { goNextPage } from '../redux/actions';
+import { goPrevPage, goNextPage,  delMood} from 'src/redux/actions';
 
 export function MoodTracker() {
 
     const dispatch = useDispatch();
+
+    const curDate = useSelector((store) => store.curDateReducer.temporaryData.curDate);
     
     return (
         <SafeAreaView style={{ flex: 1, flexDirection: 'col', width: '100%', backgroundColor: 'white' }}>
@@ -22,7 +23,11 @@ export function MoodTracker() {
                     onPress={() => { dispatch(goPrevPage()) }}>
                     <GoBackArrowIcon />
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => { 
+                        dispatch(delMood(curDate));
+                        // dispatch(goNextPage('Home'));
+                     }}>
                     <EraserIcon height='48' width='48' />
                 </TouchableOpacity>
             </View>

@@ -10,12 +10,13 @@ import { MoodTracker } from 'src/screens/MoodTracker';
 import MrSeagull from 'src/screens/MrSeagull';
 import Calendar from 'src/screens/Calendar';
 import Settings from 'src/screens/Settings';
+import Authentication from 'src/screens/Authentication';
 
 const Stack = createStackNavigator();
 
 const MyStack = () => {
 
-  const currentPage = useSelector(store => store.appPageReducer.temporaryData.AppViewData.pageHistory.slice(-1)[0]);
+  const currentPage = useSelector(store => store.pageHistoryReducer.temporaryData.pageHistory.slice(-1)[0]);
 
   useEffect(() => {
     console.log("App.js: appPage = " + currentPage)
@@ -44,13 +45,29 @@ export function navigate(name, params) {
   navigationRef.current?.navigate(name, params);
 }
 
-export default function App() {
+const FullApp = () => {
   
+  const isAuthenticated = useSelector(store => store.isAuthenticatedReducer.temporaryData.isAuthenticated);
+  const requireAuthentication = useSelector(store => store.requireAuthenticationReducer.persistentData.requireAuthentication);
+
+  return (
+    (!requireAuthentication || isAuthenticated) ?
+      (
+        <NavigationContainer ref={navigationRef}>
+          <MyStack />
+        </NavigationContainer>
+      ) :
+      (
+        <Authentication />
+      )
+  );
+}
+
+export default function App() {
+
   return (
     <Provider store={store}>
-      <NavigationContainer ref={navigationRef}>
-        <MyStack />
-      </NavigationContainer>
+      <FullApp />
     </Provider>
   );
 
