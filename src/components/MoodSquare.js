@@ -13,6 +13,8 @@ const defaultProps = {
     },
     maxFaceRadius: 40,
     minFaceRadius: 10,
+    minimumValue: 0,
+    maximumValue: 100,
 };
 
 export function MoodSquare(props) {
@@ -27,11 +29,24 @@ export function MoodSquare(props) {
 
     // TODO: Implement adaptive shaping for the face
 
+    const curDate = useSelector((store) => store.temporaryData.curDate);
     const cx = useSelector(
-        (store) => store.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerHorizontalSlider
+        (store) => {
+            let moodRecord = store.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+            if (moodRecord.length > 0) {
+                return moodRecord[0].get('intensity');
+            }
+            return finalProps.minimumValue;
+        }
     );
     const cy = useSelector(
-        (store) => store.sliderValueReducer.temporaryData.MoodTrackerViewData.MoodTrackerVerticalSlider
+        (store) => {
+            let moodRecord = store.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+            if (moodRecord.length > 0) {
+                return moodRecord[0].get('valence');
+            }
+            return finalProps.minimumValue;
+        }
     );
 
     const [faceRadius, setFaceRadius] = useState( (cx / 100.0 * (finalProps.maxFaceRadius - finalProps.minFaceRadius) + finalProps.minFaceRadius) );

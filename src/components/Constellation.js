@@ -117,7 +117,7 @@ const Constellation = () => {
     console.log(selectedIndex);
   };
 
-  const CurrentPage = useSelector(store => store.appPageReducer.temporaryData.AppViewData.pageHistory.slice(-1)[0]);
+  const CurrentPage = useSelector(store => store.temporaryData.pageHistory.slice(-1)[0]);
 
   return (
     <View style={styles.container}>

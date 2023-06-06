@@ -7,7 +7,6 @@ import { GoBackArrowIcon } from 'src/components/svg/GoBackArrowIcon';
 import { SettingsIcon } from 'src/components/svg/SettingsIcon';
 import { useDispatch } from 'react-redux';
 import { goNextPage, goPrevPage } from 'src/redux/actions';
-import { useSelector } from 'react-redux';
 
 // Calendar
 export function AppCalendar() {
