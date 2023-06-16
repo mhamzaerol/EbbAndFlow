@@ -10,10 +10,20 @@ import OceanWave from '../components/OceanWave';
 import { useDispatch } from 'react-redux';
 import { TouchableWithoutFeedback } from 'react-native';
 import { goNextPage } from 'src/redux/actions'
+import { useSelector } from 'react-redux';
 
 function Home() {
 
     const dispatch = useDispatch();
+    const curDate = useSelector((store) => store.temporaryData.curDate);
+    const moodInfo = useSelector((store) => {
+        let moodRecords = store.persistentData.moodRecords;
+        moodRecords = moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+        if (moodRecords.length > 0) {
+            return [moodRecords[0].get('valence') / 100.0, moodRecords[0].get('intensity') / 100.0];
+        }
+        return [0.5, 0.5];
+    });
 
     const handleSelectedDay = (feeling, intensity) => {
         if (feeling === -1 || intensity === -1) {
@@ -29,45 +39,46 @@ function Home() {
     const [feeling, setFeeling] = useState(0.5);
     const [intensity, setIntensity] = useState(0.5);
 
+    useEffect(() => {
+        setFeeling(moodInfo[0]);
+        setIntensity(moodInfo[1]);
+    }, [])
+
     return (
         <View style={styles.container}>
-            <Constellation onSelectedDayChange={handleSelectedDay}/>
-            { feeling < 0.5 &&
+          <Constellation onSelectedDayChange={handleSelectedDay}/>
+          {feeling < 0.5 ? (
             <TouchableWithoutFeedback onPress={() =>
-                dispatch(
-                    goNextPage('MoodTracker')
-                )
+              dispatch(
+                goNextPage('MoodTracker')
+              )
             }>
-                <View style={styles.gloomy}/>
-            </TouchableWithoutFeedback> }
-            { feeling >= 0.5 &&
+              <View style={styles.gloomy}/>
+            </TouchableWithoutFeedback>
+          ) : (
             <TouchableWithoutFeedback onPress={() =>
-                dispatch(
-                    goNextPage('MoodTracker')
-                )
+              dispatch(
+                goNextPage('MoodTracker')
+              )
             }>
-                <View style={styles.clear}/>
-            </TouchableWithoutFeedback> }
-            { feeling < 0.5 &&
-            <HomeBackground>
+              <View style={styles.clear}/>
+            </TouchableWithoutFeedback>
+          )}
+          <HomeBackground>
+            {feeling < 0.5 ? (
+              <>
                 <Cloud style={styles.cloud} fill='gray'/>
                 <OceanWave intensity={intensity} />
-            </HomeBackground> }
-            { feeling >= 0.5 &&
-            <HomeBackground>
+              </>
+            ) : (
+              <>
                 <Sun style={styles.sun} />
                 <OceanWave intensity={intensity} />
-            </HomeBackground> }
+              </>
+            )}
+          </HomeBackground>
         </View>
-        // <View style={styles.container}>
-        //     <Constellation />
-        //     <View style={styles.gloomy}/>
-        //     <HomeBackground>
-        //         <Cloud style={styles.cloud} fill='gray'/>
-        //         <OceanWave feeling={0.2} intensity={1}/>
-        //     </HomeBackground>
-        // </View>
-    );
+      );
 }
 
 const styles = StyleSheet.create({

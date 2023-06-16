@@ -34,13 +34,7 @@ const maxAmplitude = 40;
 export const OceanWave = (props) => {
   const speed = minSpeed + (maxSpeed - minSpeed) * (1 - props.intensity);
   const amplitude = useValue(minAmplitude + (maxAmplitude - minAmplitude) * props.intensity);
-
-  useEffect(() => {
-    amplitude.current = minAmplitude + (maxAmplitude - minAmplitude) * props.intensity;
-  }, [props.intensity])
-  
   const verticalShift = useValue(verticalShiftConst);
-  // const amplitude = useValue(initialAmplitude);
   const clock = useClockValue();
 
   const createWavePath = (phase = 20) => {
@@ -81,6 +75,10 @@ export const OceanWave = (props) => {
   const gradientEnd = useComputedValue(() => {
     return vec(0, verticalShift.current + 150);
   }, [verticalShift]);
+
+  useEffect(() => {
+    amplitude.current = minAmplitude + (maxAmplitude - minAmplitude) * props.intensity;
+  }, [props.intensity])
 
   return (
     <View style={{flex:1}}>
