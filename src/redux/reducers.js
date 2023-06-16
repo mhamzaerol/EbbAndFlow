@@ -1,4 +1,4 @@
-import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD } from "src/redux/actions";
+import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL } from "src/redux/actions";
 import { persistentInitialState, temporaryInitialState } from 'src/redux/initialState';
 
 // Persistent Data Reducers
@@ -58,6 +58,8 @@ export const pageHistoryReducer = (state = temporaryInitialState.pageHistory, ac
 
 export const isAuthenticatedReducer = (state = temporaryInitialState.isAuthenticated, action) => {
     switch (action.type) {
+        case AUTH_SUCCESSFUL:
+            return true
         default:
             return state;
     }
