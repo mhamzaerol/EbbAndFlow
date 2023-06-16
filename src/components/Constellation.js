@@ -7,85 +7,83 @@ import { goNextPage } from 'src/redux/actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-const getRandomArray = (n) => {
-  const arr = [];
-  for(let i = 0; i < n; i++) {
-    arr.push(Math.random());
-  }
-  return arr;
-}
-
 var selectedIndex = 14;
+const numDaysToDisplay = 14;
 const minstarSize = 20;
 const maxstarSize = 50;
 const minVerticalPosition = 25;
 const maxVerticalPosition = 75;
 
-const Constellation = () => {
-  const numRectangles = 14;
+function getRecordsWithinTwoWeeks(moodRecords, curDate) {
+  // Get the current date and time (excluding hours, minutes, and seconds)
+  const currentDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
 
-  const feelings = getRandomArray(numRectangles);
-  const intensities = getRandomArray(numRectangles);
+  // Create a new array to store the dates within the last two weeks
+  const feelings = [];
+  const intensities = [];
+
+  // Iterate through the dates array
+  for (let i = 13; i >= 0; i--) {
+    // Calculate the date to compare against (subtracting days from the current date)
+    const compareDate = new Date(currentDate);
+    compareDate.setDate(compareDate.getDate() - i);
+
+    // Check if the compareDate exists in the datesArray
+    const foundRecord = moodRecords.find(moodRecord => {
+      const date = moodRecord.get('date');
+      const arrayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      return arrayDate.getTime() === compareDate.getTime();
+    });
+
+    // Add the foundDate to the datesWithinTwoWeeks array, or add a default value if not found
+    feelings.push(foundRecord?.get("valence") / 100.0 || -1.0);
+    intensities.push(foundRecord?.get("intensity") / 100.0 || -1.0);
+  }
+
+  return [feelings, intensities];
+}
+
+
+const Constellation = () => {
+  const curDate = useSelector((store) => store.temporaryData.curDate);
+  const records = useSelector((store) => store.persistentData.moodRecords);
+  const [lastRecords, setLastRecords] = useState(getRecordsWithinTwoWeeks(records, curDate));
 
   const scrollViewRef = useRef(null);
   const [stars, setstars] = useState([]);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    generatestars();
-    scrollToRight();
-  }, []);
-
-  const convertToHexColor = (arousal, valence) => {
-    const angle = Math.atan2(valence - 0.5, arousal - 0.5) + Math.PI;
-    const degrees = (angle * 180) / Math.PI;
-    const hue = degrees;
-    const saturation = 100;
-    const lightness = 50;
-
-    function hslToHex(h, s, l) {
-      l /= 100;
-      const a = s * Math.min(l, 1 - l) / 100;
-      const f = n => {
-        const k = (n + h / 30) % 12;
-        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-        return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
-      };
-      return `#${f(0)}${f(8)}${f(4)}`;
-    };
-  
-    return hslToHex(hue, saturation, lightness);
-  };
-
-  const generatestars = () => {
+  const generateStars = () => {
+    const feelings = lastRecords[0];
+    const intensities = lastRecords[1];
     const sizes = [];
     const positions = [];
     const colors = [];
-    for(let i = 0; i < numRectangles; i++) {
+    for(let i = 0; i < numDaysToDisplay; i++) {
       if (feelings[i] == -1.0) {
         sizes.push(-1.0);
         continue;
       }
       sizes.push(minstarSize + (maxstarSize - minstarSize) * intensities[i]);
     }
-    for(let i = 0; i < numRectangles; i++) {
+    for(let i = 0; i < numDaysToDisplay; i++) {
       if (feelings[i] == -1.0) {
         positions.push(-1.0);
         continue;
       }
-      const pos = minVerticalPosition + (maxVerticalPosition - minVerticalPosition) * feelings[i];
+      const pos = minVerticalPosition + (maxVerticalPosition - minVerticalPosition) * (1.0 - feelings[i]);
       positions.push(pos - sizes[i] / 2);
     }
-    for(let i = 0; i < numRectangles; i++)
+    for(let i = 0; i < numDaysToDisplay; i++)
       colors.push(convertToHexColor(feelings[i], intensities[i]));
 
     const starsAttrs = [];
-    for (let i = 0; i < numRectangles; i++) {
+    for (let i = 0; i < numDaysToDisplay; i++) {
       const size = sizes[i];
       const position = positions[i];
       const color = colors[i];
-      if(i < numRectangles - 1) {
+      if(i < numDaysToDisplay - 1) {
         var nextPos = positions[i + 1];
         var nextSize = sizes[i + 1];
       } else {
@@ -111,7 +109,28 @@ const Constellation = () => {
       };
       starsAttrs.push(starAttrs);
     }
-    setstars(starsAttrs);
+    return starsAttrs;
+  };
+
+  const convertToHexColor = (arousal, valence) => {
+    const angle = Math.atan2(valence - 0.5, arousal - 0.5) + Math.PI;
+    const degrees = (angle * 180) / Math.PI;
+    const hue = degrees;
+    const saturation = 100;
+    const lightness = 50;
+
+    function hslToHex(h, s, l) {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+      };
+      return `#${f(0)}${f(8)}${f(4)}`;
+    };
+  
+    return hslToHex(hue, saturation, lightness);
   };
 
   const scrollToRight = () => {
@@ -126,6 +145,15 @@ const Constellation = () => {
     console.log(selectedIndex);
   };
 
+  useEffect(() => {
+    setLastRecords(getRecordsWithinTwoWeeks(records, curDate));
+  }, [records, curDate]);
+
+  useEffect(() => {
+    setstars(generateStars());
+    scrollToRight();
+  }, [lastRecords]);
+  
   const CurrentPage = useSelector(store => store.temporaryData.pageHistory.slice(-1)[0]);
 
   return (
