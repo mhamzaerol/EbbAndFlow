@@ -51,12 +51,12 @@ function Home() {
             { feeling < 0.5 &&
             <HomeBackground>
                 <Cloud style={styles.cloud} fill='gray'/>
-                <OceanWave feeling={feeling} intensity={intensity} />
+                <OceanWave intensity={intensity} />
             </HomeBackground> }
             { feeling >= 0.5 &&
             <HomeBackground>
                 <Sun style={styles.sun} />
-                <OceanWave feeling={feeling} intensity={intensity} />
+                <OceanWave intensity={intensity} />
             </HomeBackground> }
         </View>
         // <View style={styles.container}>

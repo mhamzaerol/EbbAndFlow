@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   Dimensions,
   View,
@@ -32,9 +32,12 @@ const minAmplitude = 10;
 const maxAmplitude = 40;
 
 export const OceanWave = (props) => {
-  const [feeling, intensity] = [props.feeling, props.intensity];
-  const speed = minSpeed + (maxSpeed - minSpeed) * (1 - intensity);
-  const amplitude = useValue(minAmplitude + (maxAmplitude - minAmplitude) * intensity);
+  const speed = minSpeed + (maxSpeed - minSpeed) * (1 - props.intensity);
+  const amplitude = useValue(minAmplitude + (maxAmplitude - minAmplitude) * props.intensity);
+
+  useEffect(() => {
+    amplitude.current = minAmplitude + (maxAmplitude - minAmplitude) * props.intensity;
+  }, [props.intensity])
   
   const verticalShift = useValue(verticalShiftConst);
   // const amplitude = useValue(initialAmplitude);
