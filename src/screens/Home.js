@@ -2,9 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Constellation from '../components/Constellation';
 import HomeBackground from '../components/HomeBackground';
-import Boat from '../components/Boat';
-import Sun from '../components/Sun'
-import Cloud from '../components/Cloud';
+import Boat from '../components/svg/Boat';
+import Sun from '../components/svg/Sun'
+import Cloud from '../components/svg/Cloud';
 import OceanWave from '../components/OceanWave';
 import { useDispatch } from 'react-redux';
 import { TouchableWithoutFeedback } from 'react-native';

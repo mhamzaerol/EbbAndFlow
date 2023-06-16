@@ -27,7 +27,7 @@ import {
 import { line, curveBasis } from "d3";
 import * as Animatable from 'react-native-animatable';
 
-import Boat from "./Boat";
+import Boat from "./svg/Boat";
 
 const dimens = Dimensions.get("screen");
 const width = dimens.width;

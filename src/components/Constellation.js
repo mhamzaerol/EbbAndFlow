@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import { Svg, Defs, RadialGradient, Stop, Circle } from 'react-native-svg';
-import Star from '../components/Star';
+import Star from './svg/Star';
 import DashedLine from '../components/DashedLine'
 import { goNextPage } from 'src/redux/actions';
 import { useDispatch } from 'react-redux';
