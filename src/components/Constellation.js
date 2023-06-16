@@ -16,13 +16,13 @@ const getRandomArray = (n) => {
 }
 
 var selectedIndex = 14;
+const minstarSize = 20;
+const maxstarSize = 50;
+const minVerticalPosition = 25;
+const maxVerticalPosition = 75;
 
 const Constellation = () => {
   const numRectangles = 14;
-  const minstarSize = 20;
-  const maxstarSize = 50;
-  const minVerticalPosition = 25;
-  const maxVerticalPosition = 75;
 
   const feelings = getRandomArray(numRectangles);
   const intensities = getRandomArray(numRectangles);
@@ -62,9 +62,18 @@ const Constellation = () => {
     const sizes = [];
     const positions = [];
     const colors = [];
-    for(let i = 0; i < numRectangles; i++)
-      sizes.push(minstarSize + (maxstarSize - minstarSize) * intensities[i]);
     for(let i = 0; i < numRectangles; i++) {
+      if (feelings[i] == -1.0) {
+        sizes.push(-1.0);
+        continue;
+      }
+      sizes.push(minstarSize + (maxstarSize - minstarSize) * intensities[i]);
+    }
+    for(let i = 0; i < numRectangles; i++) {
+      if (feelings[i] == -1.0) {
+        positions.push(-1.0);
+        continue;
+      }
       const pos = minVerticalPosition + (maxVerticalPosition - minVerticalPosition) * feelings[i];
       positions.push(pos - sizes[i] / 2);
     }
@@ -147,7 +156,7 @@ const Constellation = () => {
         <View style={styles.rectangleRow}>
           {stars.map((attrs, index) => (
             <View key={index} style={styles.rectangle}>
-              {attrs.prevPos != -1 && 
+              {attrs.prevPos != -1 && attrs.size != -1.0 &&
                 <View style={{position: 'absolute'}}>
                   <DashedLine 
                     startX={styles.rectSize.width / 2}
@@ -162,7 +171,7 @@ const Constellation = () => {
               <View style={{position: 'absolute', top: attrs.position, zIndex:1}}>
                 <Star width={attrs.size} height={attrs.size} color={attrs.color} />
               </View>
-              {attrs.nextPos != -1 && 
+              {attrs.nextPos != -1 && attrs.size != -1.0 &&
                 <View style={{position: 'absolute'}}>
                   <DashedLine 
                     startX={styles.rectSize.width / 2}

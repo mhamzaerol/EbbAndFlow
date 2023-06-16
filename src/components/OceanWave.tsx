@@ -1,27 +1,19 @@
 import React from "react";
 import {
-  Alert,
   Dimensions,
-  SafeAreaView,
   View,
   StyleSheet,
-  Text as RNText,
-  TouchableOpacity,
 } from "react-native";
 
 import {
   Skia,
   Canvas,
   Path,
-  Vertices,
   vec,
   useComputedValue,
   useClockValue,
   useValue,
-  useTouchHandler,
   LinearGradient,
-  Text,
-  useFont,
 } from "@shopify/react-native-skia";
 
 import { line, curveBasis } from "d3";
