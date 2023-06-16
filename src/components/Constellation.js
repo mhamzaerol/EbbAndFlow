@@ -43,8 +43,7 @@ function getRecordsWithinTwoWeeks(moodRecords, curDate) {
   return [feelings, intensities];
 }
 
-
-const Constellation = () => {
+const Constellation = ({ onSelectedDayChange }) => {
   const curDate = useSelector((store) => store.temporaryData.curDate);
   const records = useSelector((store) => store.persistentData.moodRecords);
   const [lastRecords, setLastRecords] = useState(getRecordsWithinTwoWeeks(records, curDate));
@@ -141,12 +140,14 @@ const Constellation = () => {
     const x = event.nativeEvent.contentOffset.x;
     const index = Math.round(x / styles.rectSize.width);
     // 7 is for number of days of a week
-    selectedIndex = index + 7;
+    selectedIndex = index + 6;
     console.log(selectedIndex);
+    onSelectedDayChange(lastRecords[0][selectedIndex], lastRecords[1][selectedIndex])
   };
 
   useEffect(() => {
     setLastRecords(getRecordsWithinTwoWeeks(records, curDate));
+    onSelectedDayChange(lastRecords[0][selectedIndex], lastRecords[1][selectedIndex])
   }, [records, curDate]);
 
   useEffect(() => {

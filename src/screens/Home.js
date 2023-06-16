@@ -1,3 +1,4 @@
+import React, { useRef, useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Constellation from '../components/Constellation';
@@ -14,22 +15,49 @@ function Home() {
 
     const dispatch = useDispatch();
 
+    const handleSelectedDay = (feeling, intensity) => {
+        if (feeling === -1 || intensity === -1) {
+            setFeeling(0.5);
+            setIntensity(0.5);
+        }
+        else {
+            setFeeling(feeling);
+            setIntensity(intensity);
+        }
+    };
+
+    const [feeling, setFeeling] = useState(0.5);
+    const [intensity, setIntensity] = useState(0.5);
+
     return (
         <View style={styles.container}>
-            <Constellation />
+            <Constellation onSelectedDayChange={handleSelectedDay}/>
+            { feeling < 0.5 &&
             <TouchableWithoutFeedback onPress={() =>
                 dispatch(
                     goNextPage('MoodTracker')
                 )
             }>
-                {/* <View style={styles.clear} /> */}
                 <View style={styles.gloomy}/>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> }
+            { feeling >= 0.5 &&
+            <TouchableWithoutFeedback onPress={() =>
+                dispatch(
+                    goNextPage('MoodTracker')
+                )
+            }>
+                <View style={styles.clear}/>
+            </TouchableWithoutFeedback> }
+            { feeling < 0.5 &&
             <HomeBackground>
-                {/* <Sun style={styles.sun} /> */}
                 <Cloud style={styles.cloud} fill='gray'/>
-                <OceanWave feeling={0.2} intensity={1} />
-            </HomeBackground>
+                <OceanWave feeling={feeling} intensity={intensity} />
+            </HomeBackground> }
+            { feeling >= 0.5 &&
+            <HomeBackground>
+                <Sun style={styles.sun} />
+                <OceanWave feeling={feeling} intensity={intensity} />
+            </HomeBackground> }
         </View>
         // <View style={styles.container}>
         //     <Constellation />
