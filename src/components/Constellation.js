@@ -36,8 +36,17 @@ function getRecordsWithinTwoWeeks(moodRecords, curDate) {
     });
 
     // Add the foundDate to the datesWithinTwoWeeks array, or add a default value if not found
-    feelings.push(foundRecord?.get("valence") / 100.0 || -1.0);
-    intensities.push(foundRecord?.get("intensity") / 100.0 || -1.0);
+    feelings.push(foundRecord?.get("valence"));
+    if (feelings.slice(-1)[0] === undefined)
+      feelings[feelings.length - 1] = -1.0;
+    else 
+      feelings[feelings.length - 1] /= 100.0
+      
+    intensities.push(foundRecord?.get("intensity"));
+    if (intensities.slice(-1)[0] === undefined)
+      intensities[intensities.length - 1] = -1.0;
+    else
+      intensities[intensities.length - 1] /= 100.0
   }
 
   return [feelings, intensities];

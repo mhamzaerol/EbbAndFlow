@@ -21,7 +21,7 @@ export const temporaryInitialState = {
     pageHistory: [
         'Home'
     ],
-    isAuthenticated: true,
+    isAuthenticated: false,
     curDate: new Date(2023, 5, 5),
 }
 

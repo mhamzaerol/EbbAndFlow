@@ -9,7 +9,7 @@ import Cloud from '../components/svg/Cloud';
 import OceanWave from '../components/OceanWave';
 import { useDispatch } from 'react-redux';
 import { TouchableWithoutFeedback } from 'react-native';
-import { goNextPage } from 'src/redux/actions'
+import { goNextPage, setCurDate } from 'src/redux/actions'
 import { useSelector } from 'react-redux';
 
 function Home() {
@@ -42,6 +42,9 @@ function Home() {
     useEffect(() => {
         setFeeling(moodInfo[0]);
         setIntensity(moodInfo[1]);
+        
+        const today = new Date();
+        dispatch(setCurDate(today));
     }, [])
 
     return (

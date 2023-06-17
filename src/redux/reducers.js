@@ -1,4 +1,4 @@
-import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL } from "src/redux/actions";
+import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE } from "src/redux/actions";
 import { persistentInitialState, temporaryInitialState } from 'src/redux/initialState';
 
 // Persistent Data Reducers
@@ -67,6 +67,8 @@ export const isAuthenticatedReducer = (state = temporaryInitialState.isAuthentic
 
 export const curDateReducer = (state = temporaryInitialState.curDate, action) => {
     switch (action.type) {
+        case SET_CUR_DATE:
+            return action.payload.curDate;
         default:
             return state;
     }

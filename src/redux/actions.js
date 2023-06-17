@@ -21,6 +21,7 @@ export const SET_SLIDER_VALUE = 'SET_SLIDER_VALUE';
 export const GO_NEXT_PAGE = 'GO_NEXT_PAGE';
 export const GO_PREV_PAGE = 'GO_PREV_PAGE';
 export const AUTH_SUCCESSFUL = 'AUTH_SUCCESSFUL';
+export const SET_CUR_DATE = 'SET_CUR_DATE';
 
 export const goNextPage = (pageName) => dispatch => {
     dispatch({
@@ -38,5 +39,12 @@ export const goPrevPage = () => dispatch => {
 export const authSuccessful = () => dispatch => {
     dispatch({
         type: AUTH_SUCCESSFUL,
+    });
+}
+
+export const setCurDate = (curDate) => dispatch => {
+    dispatch({
+        type: SET_CUR_DATE,
+        payload: { curDate },
     });
 }
