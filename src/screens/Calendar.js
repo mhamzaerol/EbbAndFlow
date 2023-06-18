@@ -7,12 +7,36 @@ import { GoBackArrowIcon } from 'src/components/svg/GoBackArrowIcon';
 import { SettingsIcon } from 'src/components/svg/SettingsIcon';
 import { useDispatch } from 'react-redux';
 import { goNextPage, goPrevPage } from 'src/redux/actions';
+import { useSelector } from 'react-redux'; 
+import { setCurDate } from 'src/redux/actions';
+import { useNavigation } from '@react-navigation/native';
 
 // Calendar
 export function AppCalendar() {
   const [selected, setSelected] = useState('');
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
+  // console.log(diaryRecords);
+  const diaryRecords = useSelector(state => state.persistentData.diaryRecords);
+  const markedDates = diaryRecords.reduce((acc, record) => {
+    const dateString = record.get('date').toISOString().split('T')[0];
+    return { ...acc, [dateString]: { marked: true, dotColor: 'orange' }};
+  }, {});
+  const handleDayPress = (day) => {
+    setSelected(day.dateString);
+    dispatch(setCurDate(day.dateString));
+    // const date = useSelector(state => state.temporaryData.curDate);
+    // console.log(date)
+    const record = diaryRecords.find(
+      record => record.get('date').toISOString().split('T')[0] === day.dateString
+    );
+    setSelectedRecord(record);
+  };
 
+  // console.log(markedDates)
+  // console.log(diaryRecords.length);
+  // console.log(diaryRecords);
   return (
     <View>
       <Calendar
@@ -22,31 +46,40 @@ export function AppCalendar() {
           height: 350,
           marginTop: 75,
         }}
-        onDayPress={day => {
-          setSelected(day.dateString);
-        }}
+        onDayPress={handleDayPress}
         markedDates={{
-          [selected]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' }
+          ...markedDates,
+          [selected]: { ...markedDates[selected], selected: true, disableTouchEvent: true, selectedDotColor: 'orange' }
         }}
       />
       {selected && (
-        <View style={{
-          alignItems: 'flex-start',
-          padding: 20,
-          borderWidth: 1,
-          borderColor: 'gray',
-          backgroundColor: 'white'
-        }}>
-          <Text style={{ marginBottom: 10 , fontSize: 16}}>Date: {selected}</Text>
-          <Text style={{ marginBottom: 10 , fontSize: 16}}>No diary yet.</Text>
-          <TouchableOpacity
-            style={{ alignSelf: 'center', backgroundColor: 'black', padding: 10, borderRadius: 5 }}
-            onPress={() => dispatch(goNextPage('WriteDiary'))}
-          >
-            <Text style={{ color: 'white', fontSize: 20}}>Write Diary</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+  <View style={{
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    alignItems: 'center', 
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'gray',
+    backgroundColor: 'white'
+  }}>
+    <View> 
+      <Text style={{ marginBottom: 10 , fontSize: 16}}>Date: {selected}</Text>
+      {selectedRecord
+        ? <Text style={{ marginBottom: 10 , fontSize: 16}}>{selectedRecord.get('diaryTitle')}</Text>
+        : <Text style={{ marginBottom: 10 , fontSize: 16}}>No diary yet.</Text>
+      }
+    </View>
+    <TouchableOpacity
+      style={{ backgroundColor: 'black', padding: 10, borderRadius: 5 }}
+      onPress={() => dispatch(selectedRecord ? goNextPage('WriteDiary') : goNextPage('WriteDiary'))}
+    >
+      <Text style={{ color: 'white', fontSize: 20}}>
+        {selectedRecord ? 'View Diary' : 'Write Diary'}
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
+
     </View>
   );
 }
@@ -80,3 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 export default MainApp;
+
