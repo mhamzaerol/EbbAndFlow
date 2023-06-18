@@ -3,6 +3,7 @@ import {DiaryRecord, MoodRecord, SeagullChat} from 'src/redux/datatypes';
 export const persistentInitialState = {
     diaryRecords: [
         new DiaryRecord(new Date(2023, 5, 5), "I'm feeling great today!", "Hello\nMy day was perfect today!!!"),
+    //     new DiaryRecord(new Date(2023, 6, 4), "I'm feeling great today!", "Hello\nMy day was perfect today!!!"),
     ],
     moodRecords: [],
     seagullChats: [
