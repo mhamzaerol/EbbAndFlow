@@ -17,14 +17,6 @@ function Home() {
 
     const dispatch = useDispatch();
     const curDate = useSelector((store) => store.temporaryData.curDate);
-    // const moodInfo = useSelector((store) => {
-    //     let moodRecords = store.persistentData.moodRecords;
-    //     moodRecords = moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
-    //     if (moodRecords.length > 0) {
-    //         return [moodRecords[0].get('valence') / 100.0, moodRecords[0].get('intensity') / 100.0];
-    //     }
-    //     return [0.5, 0.5];
-    // });
     const moodRecord = useSelector((store) => {
         let moodRecords = store.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
         if (moodRecords.length > 0) {
@@ -33,23 +25,7 @@ function Home() {
         return new MoodRecord(curDate, 50, 50);
     });
 
-    // const handleSelectedDay = (feeling, intensity) => {
-    //     if (feeling === -1 || intensity === -1) {
-    //         setFeeling(0.5);
-    //         setIntensity(0.5);
-    //     }
-    //     else {
-    //         setFeeling(feeling);
-    //         setIntensity(intensity);
-    //     }
-    // };
-
-    // const [feeling, setFeeling] = useState(0.5);
-    // const [intensity, setIntensity] = useState(0.5);
-
     useEffect(() => {
-        // setFeeling(moodInfo[0]);
-        // setIntensity(moodInfo[1]);
         const today = new Date();
         dispatch(setCurDate(today));
     }, [])
