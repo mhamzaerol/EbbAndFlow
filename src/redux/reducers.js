@@ -1,4 +1,4 @@
-import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, RESET_APP, SET_AUTH, SET_FONT_SIZE } from 'src/redux/actions';
+import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE, RESET_APP, SET_AUTH, SET_FONT_SIZE } from "src/redux/actions";
 import { persistentInitialState, temporaryInitialState } from 'src/redux/initialState';
 
 // Persistent Data Reducers
@@ -74,6 +74,8 @@ export const pageHistoryReducer = (state = temporaryInitialState.pageHistory, ac
 
 export const isAuthenticatedReducer = (state = temporaryInitialState.isAuthenticated, action) => {
     switch (action.type) {
+        case AUTH_SUCCESSFUL:
+            return true
         case RESET_APP:
             return temporaryInitialState.isAuthenticated;
         default:
@@ -83,6 +85,8 @@ export const isAuthenticatedReducer = (state = temporaryInitialState.isAuthentic
 
 export const curDateReducer = (state = temporaryInitialState.curDate, action) => {
     switch (action.type) {
+        case SET_CUR_DATE:
+            return action.payload.curDate;
         case RESET_APP:
             return temporaryInitialState.curDate;
         default:
