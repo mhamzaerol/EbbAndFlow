@@ -48,8 +48,6 @@ const FullApp = () => {
 
   const isAuthenticated = useSelector(store => store.temporaryData.isAuthenticated);
   const requireAuthentication = useSelector(store => store.persistentData.requireAuthentication);
-
-  console.log(isAuthenticated)
   
   return (
     (!requireAuthentication || isAuthenticated) ?

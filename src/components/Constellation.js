@@ -6,6 +6,7 @@ import DashedLine from '../components/DashedLine'
 import { goNextPage } from 'src/redux/actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { setCurDate } from 'src/redux/actions';
 
 var selectedIndex = 14;
 const numDaysToDisplay = 14;
@@ -19,52 +20,73 @@ function getRecordsWithinTwoWeeks(moodRecords, curDate) {
   const currentDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
 
   // Create a new array to store the dates within the last two weeks
+  const numDaysToDisplay = 14;
   const feelings = [];
   const intensities = [];
 
-  // Iterate through the dates array
-  for (let i = 13; i >= 0; i--) {
-    // Calculate the date to compare against (subtracting days from the current date)
-    const compareDate = new Date(currentDate);
-    compareDate.setDate(compareDate.getDate() - i);
-
-    // Check if the compareDate exists in the datesArray
-    const foundRecord = moodRecords.find(moodRecord => {
-      const date = moodRecord.get('date');
-      const arrayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      return arrayDate.getTime() === compareDate.getTime();
-    });
-
-    // Add the foundDate to the datesWithinTwoWeeks array, or add a default value if not found
-    feelings.push(foundRecord?.get("valence"));
-    if (feelings.slice(-1)[0] === undefined)
-      feelings[feelings.length - 1] = -1.0;
-    else 
-      feelings[feelings.length - 1] /= 100.0
-      
-    intensities.push(foundRecord?.get("intensity"));
-    if (intensities.slice(-1)[0] === undefined)
-      intensities[intensities.length - 1] = -1.0;
-    else
-      intensities[intensities.length - 1] /= 100.0
+  for(let i = 0; i < numDaysToDisplay; i++) {
+    feelings.push(-1.0);
+    intensities.push(-1.0);
   }
+
+  moodRecords.forEach(moodRecord => {
+    const date = moodRecord.get('date');
+    // if within the range
+    if (date.getTime() >= currentDate.getTime() - (numDaysToDisplay - 1) * 24 * 60 * 60 * 1000 && date.getTime() <= currentDate.getTime() + 24 * 60 * 60 * 1000) {
+      let i = currentDate.getDate() - date.getDate();
+      feelings[numDaysToDisplay - i - 1] = moodRecord.get('valence') / 100.0;
+      intensities[numDaysToDisplay - i - 1] = moodRecord.get('intensity') / 100.0;
+    }
+  });
+
+  console.log(feelings, intensities)
+
+  
+
+  // Iterate through the dates array
+  // for (let i = 13; i >= 0; i--) {
+  //   // Calculate the date to compare against (subtracting days from the current date)
+  //   const compareDate = new Date(currentDate);
+  //   compareDate.setDate(compareDate.getDate() - i);
+
+  //   // Check if the compareDate exists in the datesArray
+  //   const foundRecord = moodRecords.find(moodRecord => {
+  //     const date = moodRecord.get('date');
+  //     const arrayDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  //     return arrayDate.getTime() === compareDate.getTime();
+  //   });
+
+  //   // Add the foundDate to the datesWithinTwoWeeks array, or add a default value if not found
+  //   feelings.push(foundRecord?.get("valence"));
+  //   if (feelings.slice(-1)[0] === undefined)
+  //     feelings[feelings.length - 1] = -1.0;
+  //   else 
+  //     feelings[feelings.length - 1] /= 100.0
+      
+  //   intensities.push(foundRecord?.get("intensity"));
+  //   if (intensities.slice(-1)[0] === undefined)
+  //     intensities[intensities.length - 1] = -1.0;
+  //   else
+  //     intensities[intensities.length - 1] /= 100.0
+  // }
 
   return [feelings, intensities];
 }
 
-const Constellation = ({ onSelectedDayChange }) => {
+const Constellation = () => {
   const curDate = useSelector((store) => store.temporaryData.curDate);
-  const records = useSelector((store) => store.persistentData.moodRecords);
-  const [lastRecords, setLastRecords] = useState(getRecordsWithinTwoWeeks(records, curDate));
+  const todayFullDate = new Date();
+  const today = new Date(todayFullDate.getFullYear(), todayFullDate.getMonth(), todayFullDate.getDate());
+  // const records = useSelector((store) => store.persistentData.moodRecords);
+
+  // const [lastRecords, setLastRecords] = useState(getRecordsWithinTwoWeeks(records, curDate));
 
   const scrollViewRef = useRef(null);
-  const [stars, setstars] = useState([]);
+  // const [stars, setstars] = useState([]);
 
   const dispatch = useDispatch();
 
-  const generateStars = () => {
-    const feelings = lastRecords[0];
-    const intensities = lastRecords[1];
+  const generateStars = (feelings, intensities) => {
     const sizes = [];
     const positions = [];
     const colors = [];
@@ -149,22 +171,39 @@ const Constellation = ({ onSelectedDayChange }) => {
     const x = event.nativeEvent.contentOffset.x;
     const index = Math.round(x / styles.rectSize.width);
     // 7 is for number of days of a week
-    selectedIndex = index + 6;
-    console.log(selectedIndex);
-    onSelectedDayChange(lastRecords[0][selectedIndex], lastRecords[1][selectedIndex])
+    const delta = numDaysToDisplay - (index + 6) - 1;
+    const dateSet = new Date(today.getFullYear(), today.getMonth(), today.getDate() - delta);
+    console.log(dateSet)
+    // selectedIndex = index + 6;
+    // console.log(selectedIndex);
+    dispatch(
+      setCurDate(
+        dateSet
+      )
+    );
+    // onSelectedDayChange(lastRecords[0][selectedIndex], lastRecords[1][selectedIndex])
+
   };
 
-  useEffect(() => {
-    setLastRecords(getRecordsWithinTwoWeeks(records, curDate));
-    onSelectedDayChange(lastRecords[0][selectedIndex], lastRecords[1][selectedIndex])
-  }, [records, curDate]);
+  // useEffect(() => {
+  //   setLastRecords(getRecordsWithinTwoWeeks(records, curDate));
+  //   onSelectedDayChange(lastRecords[0][selectedIndex], lastRecords[1][selectedIndex])
+  // }, [records, curDate]);
+
+
+  const [lastRecords, stars] = useSelector((store) => {
+    let lastRecords = getRecordsWithinTwoWeeks(store.persistentData.moodRecords, today)
+    return [lastRecords, generateStars(lastRecords[0], lastRecords[1])];
+  });
+  const CurrentPage = useSelector(store => store.temporaryData.pageHistory.slice(-1)[0]);
 
   useEffect(() => {
-    setstars(generateStars());
+    // setstars(generateStars(lastRecords[0], lastRecords[1]));
+    // setstars(generateStars([0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4], [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5, 0.5]));
     scrollToRight();
-  }, [lastRecords]);
-  
-  const CurrentPage = useSelector(store => store.temporaryData.pageHistory.slice(-1)[0]);
+    // onSelectedDayChange(lastRecords[0][selectedIndex], lastRecords[1][selectedIndex])
+  }, []);
+
 
   return (
     <View style={styles.container}>

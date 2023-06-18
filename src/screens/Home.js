@@ -11,46 +11,53 @@ import { useDispatch } from 'react-redux';
 import { TouchableWithoutFeedback } from 'react-native';
 import { goNextPage, setCurDate } from 'src/redux/actions'
 import { useSelector } from 'react-redux';
+import { MoodRecord } from 'src/redux/datatypes';
 
 function Home() {
 
     const dispatch = useDispatch();
     const curDate = useSelector((store) => store.temporaryData.curDate);
-    const moodInfo = useSelector((store) => {
-        let moodRecords = store.persistentData.moodRecords;
-        moodRecords = moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+    // const moodInfo = useSelector((store) => {
+    //     let moodRecords = store.persistentData.moodRecords;
+    //     moodRecords = moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
+    //     if (moodRecords.length > 0) {
+    //         return [moodRecords[0].get('valence') / 100.0, moodRecords[0].get('intensity') / 100.0];
+    //     }
+    //     return [0.5, 0.5];
+    // });
+    const moodRecord = useSelector((store) => {
+        let moodRecords = store.persistentData.moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
         if (moodRecords.length > 0) {
-            return [moodRecords[0].get('valence') / 100.0, moodRecords[0].get('intensity') / 100.0];
+            return moodRecords[0];
         }
-        return [0.5, 0.5];
+        return new MoodRecord(curDate, 50, 50);
     });
 
-    const handleSelectedDay = (feeling, intensity) => {
-        if (feeling === -1 || intensity === -1) {
-            setFeeling(0.5);
-            setIntensity(0.5);
-        }
-        else {
-            setFeeling(feeling);
-            setIntensity(intensity);
-        }
-    };
+    // const handleSelectedDay = (feeling, intensity) => {
+    //     if (feeling === -1 || intensity === -1) {
+    //         setFeeling(0.5);
+    //         setIntensity(0.5);
+    //     }
+    //     else {
+    //         setFeeling(feeling);
+    //         setIntensity(intensity);
+    //     }
+    // };
 
-    const [feeling, setFeeling] = useState(0.5);
-    const [intensity, setIntensity] = useState(0.5);
+    // const [feeling, setFeeling] = useState(0.5);
+    // const [intensity, setIntensity] = useState(0.5);
 
     useEffect(() => {
-        setFeeling(moodInfo[0]);
-        setIntensity(moodInfo[1]);
-        
+        // setFeeling(moodInfo[0]);
+        // setIntensity(moodInfo[1]);
         const today = new Date();
         dispatch(setCurDate(today));
     }, [])
 
     return (
         <View style={styles.container}>
-          <Constellation onSelectedDayChange={handleSelectedDay}/>
-          {feeling < 0.5 ? (
+          <Constellation/>
+          {moodRecord.get('valence') < 0.5 ? (
             <TouchableWithoutFeedback onPress={() =>
               dispatch(
                 goNextPage('MoodTracker')
@@ -68,15 +75,15 @@ function Home() {
             </TouchableWithoutFeedback>
           )}
           <HomeBackground>
-            {feeling < 0.5 ? (
+            {moodRecord.get('valence') < 0.5 ? (
               <>
                 <Cloud style={styles.cloud} fill='gray'/>
-                <OceanWave intensity={intensity} />
+                <OceanWave intensity={moodRecord.get('intensity') / 100.0} />
               </>
             ) : (
               <>
                 <Sun style={styles.sun} />
-                <OceanWave intensity={intensity} />
+                <OceanWave intensity={moodRecord.get('intensity') / 100.0} />
               </>
             )}
           </HomeBackground>
