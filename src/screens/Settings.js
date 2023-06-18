@@ -7,28 +7,30 @@ import { TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { goPrevPage } from "src/redux/actions";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { resetApp } from "src/redux/actions";
+import { useSelector } from "react-redux";
+import { setAuth, setFontSize } from "src/redux/actions";
 
-const Settings = ({ requireAuth }) => {
-    // const Settings = () => {
-    const [isEnabled, setIsEnabled] = useState(true);
+const Settings = () => {
+    const requireAuthentication = useSelector(store => store.persistentData.requireAuthentication);
+    const fontSize = useSelector(store => store.persistentData.fontSize);
 
-    const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
     const fonts = ["Small", "Normal", "Large"];
     const dispatch = useDispatch();
 
     const handleFontSizeChange = (value) => {
-        setNewFontSize(value);
+        dispatch(setFontSize(value));
     };
 
     const handleRequireAuthToggle = () => {
-        requireAuth = !requireAuth;
+        dispatch(setAuth(!requireAuthentication));
     };
 
     const handleBack = () => {
         dispatch(goPrevPage());
     };
 
-    const resetApp = () =>
+    const resetTheApp = () =>
         Alert.alert(
             "Notification",
             "Are you sure you want to reset?",
@@ -41,7 +43,10 @@ const Settings = ({ requireAuth }) => {
                 },
                 {
                     text: "Reset",
-                    onPress: () => console.log("Reset pressed"),
+                    onPress: () => {
+                        dispatch(resetApp());
+                        console.log("Reset pressed");
+                    },
                     style: "capcel",
                 },
             ],
@@ -60,7 +65,6 @@ const Settings = ({ requireAuth }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                {/* <AntDesign name="left" size={30} onPress={handleBack} /> */}
                 <TouchableOpacity onPress={handleBack}>
                     <GoBackArrowIcon />
                 </TouchableOpacity>
@@ -75,10 +79,10 @@ const Settings = ({ requireAuth }) => {
                     <Text style={styles.requireAuthLabel}>Require Authentication:</Text>
                     <Switch
                         trackColor={{ false: "#767577", true: "#81b0ff" }}
-                        thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                        thumbColor={requireAuthentication ? "#f5dd4b" : "#f4f3f4"}
                         ios_backgroundColor="#3e3e3e"
-                        onValueChange={toggleSwitch}
-                        value={isEnabled}
+                        onValueChange={handleRequireAuthToggle}
+                        value={requireAuthentication}
                     />
                 </View>
 
@@ -87,28 +91,26 @@ const Settings = ({ requireAuth }) => {
                     <SelectDropdown
                         data={fonts}
                         onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index);
+                            handleFontSizeChange(selectedItem);
                         }}
                         buttonTextAfterSelection={(selectedItem) => getDropdownText(selectedItem)}
                         rowTextForSelection={(item) => {
                             return item;
                         }}
-                        defaultButtonText={getDropdownText("Select Size")}
+                        defaultButtonText={getDropdownText(fontSize)}
                         buttonStyle={{backgroundColor: 'white', borderRadius: 10, borderColor: 'black', borderWidth: 1, maxWidth: '45%', flex: 1, flexDirection: 'row', alignItems: 'center'}}
                         rowTextStyle={{fontSize: 16}}
                         selectedRowTextStyle={{fontSize: 16}}
                     />
-                        {/* <AntDesign size={30} style={{ left: 60, top: 1 }} /> */}
                 </View>
             </View>
 
             <View style={styles.resetSection}>
-                <Text style={styles.resetSizesection} onPress={resetApp}>
+                <Text style={styles.resetSizesection} onPress={resetTheApp}>
                     Reset App
                 </Text>
             </View>
 
-            {/* Other content goes here */}
         </SafeAreaView>
     );
 };
@@ -122,10 +124,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flex: 0,
-        // position: "absolute",
-        // top: 70,
         width: "100%",
-        // height: 50,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -145,10 +144,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     fontSizeInput: {
-        // height: 40,
     },
     requireAuthSection: {
-        // width: "100%",
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -156,8 +153,6 @@ const styles = StyleSheet.create({
     },
     toggle: {
         flex: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center',
     },
     requireAuthLabel: {
         flex: 1,
@@ -174,17 +169,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     resetSection: {
-        // position: "absolute",
-        // width: 375,
-        // top: 550,
         flexDirection: "row",
         justifyContent: "center",
         alignSelf: 'flex-end',
         width: '100%',
         marginBottom: 20,
-        // paddingBottom: 20,
-        // paddingTop: 20,
-        // paddingLeft: 0,
     },
     resetSizesection: {
         color: "red",

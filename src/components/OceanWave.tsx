@@ -1,33 +1,25 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
-  Alert,
   Dimensions,
-  SafeAreaView,
   View,
   StyleSheet,
-  Text as RNText,
-  TouchableOpacity,
 } from "react-native";
 
 import {
   Skia,
   Canvas,
   Path,
-  Vertices,
   vec,
   useComputedValue,
   useClockValue,
   useValue,
-  useTouchHandler,
   LinearGradient,
-  Text,
-  useFont,
 } from "@shopify/react-native-skia";
 
 import { line, curveBasis } from "d3";
 import * as Animatable from 'react-native-animatable';
 
-import Boat from "./Boat";
+import Boat from "./svg/Boat";
 
 const dimens = Dimensions.get("screen");
 const width = dimens.width;
@@ -40,12 +32,9 @@ const minAmplitude = 10;
 const maxAmplitude = 40;
 
 export const OceanWave = (props) => {
-  const [feeling, intensity] = [props.feeling, props.intensity];
-  const speed = minSpeed + (maxSpeed - minSpeed) * (1 - intensity);
-  const amplitude = useValue(minAmplitude + (maxAmplitude - minAmplitude) * intensity);
-  
+  const speed = minSpeed + (maxSpeed - minSpeed) * (1 - props.intensity);
+  const amplitude = useValue(minAmplitude + (maxAmplitude - minAmplitude) * props.intensity);
   const verticalShift = useValue(verticalShiftConst);
-  // const amplitude = useValue(initialAmplitude);
   const clock = useClockValue();
 
   const createWavePath = (phase = 20) => {
@@ -86,6 +75,10 @@ export const OceanWave = (props) => {
   const gradientEnd = useComputedValue(() => {
     return vec(0, verticalShift.current + 150);
   }, [verticalShift]);
+
+  useEffect(() => {
+    amplitude.current = minAmplitude + (maxAmplitude - minAmplitude) * props.intensity;
+  }, [props.intensity])
 
   return (
     <View style={{flex:1}}>

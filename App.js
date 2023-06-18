@@ -26,6 +26,7 @@ const MyStack = () => {
     // make the view come from above
     <Stack.Navigator screenOptions={{
       headerShown: false,
+      gestureEnabled: false,
     }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Calendar" component={Calendar} />
@@ -41,14 +42,18 @@ const MyStack = () => {
 export const navigationRef = React.createRef();
 
 export function navigate(name, params) {
-  navigationRef.current?.navigate(name, params);
+  navigationRef.current?.reset({
+    index: 0,
+    routes: [{ name, params }],
+  });
+  // navigationRef.current?.navigate(name, params);
 }
 
 const FullApp = () => {
 
   const isAuthenticated = useSelector(store => store.temporaryData.isAuthenticated);
   const requireAuthentication = useSelector(store => store.persistentData.requireAuthentication);
-
+  
   return (
     (!requireAuthentication || isAuthenticated) ?
       (
