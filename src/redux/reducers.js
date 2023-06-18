@@ -1,15 +1,9 @@
-import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE, RESET_APP, SET_AUTH, SET_FONT_SIZE, ADD_DIARY_RECORD, DEL_DIARY_RECORD } from "src/redux/actions";
+import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE, RESET_APP, SET_AUTH, SET_FONT_SIZE } from "src/redux/actions";
 import { persistentInitialState, temporaryInitialState } from 'src/redux/initialState';
 
 // Persistent Data Reducers
 export const diaryRecordsReducer = (state = persistentInitialState.diaryRecords, action) => {
     switch (action.type) {
-        case ADD_DIARY_RECORD:
-            // Return a new array that includes the new diary record
-            return [...state, action.payload];
-        case DEL_DIARY_RECORD:
-            // Return a new array that does not include the deleted diary record
-            return state.filter(record => record !== action.payload);
         case RESET_APP:
             return persistentInitialState.diaryRecords;
         default:
