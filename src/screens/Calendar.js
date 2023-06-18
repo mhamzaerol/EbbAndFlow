@@ -25,7 +25,7 @@ export function AppCalendar() {
   }, {});
   const handleDayPress = (day) => {
     setSelected(day.dateString);
-    dispatch(setCurDate(day.dateString));
+    dispatch(setCurDate(new Date(day.dateString))); 
     // const date = useSelector(state => state.temporaryData.curDate);
     // console.log(date)
     const record = diaryRecords.find(
