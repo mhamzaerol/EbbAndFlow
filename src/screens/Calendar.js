@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { setCurDate } from 'src/redux/actions';
 import { MoodRecord } from 'src/redux/datatypes'; 
 
+
 // Calendar
 export function AppCalendar() {
   const [selected, setSelected] = useState('');
@@ -66,12 +67,20 @@ export function AppCalendar() {
     borderColor: 'gray',
     backgroundColor: 'white'
   }}>
-    <View> 
-      <Text style={{ marginBottom: 10 , fontSize: 16}}>Date: {selected}</Text>
-      {selectedRecord
-        ? <Text style={{ marginBottom: 10 , fontSize: 16}}>{selectedRecord.get('diaryTitle')}</Text>
-        : <Text style={{ marginBottom: 10 , fontSize: 16}}>No diary yet.</Text>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}> 
+      {selectedRecord && 
+        <Image 
+          source={require('../../assets/Face.png')}
+          style={{ width: 30, height: 30, marginRight: 10 }} // Adjust the size as needed
+        />
       }
+      <View>
+        <Text style={{ marginBottom: 10 , fontSize: 16}}>Date: {selected}</Text>
+        {selectedRecord
+          ? <Text style={{ marginBottom: 10 , fontSize: 16}}>{selectedRecord.get('diaryTitle')}</Text>
+          : <Text style={{ marginBottom: 10 , fontSize: 16}}>No diary yet.</Text>
+        }
+      </View>
     </View>
     <TouchableOpacity
       style={{ backgroundColor: 'white', borderRadius: 10, borderColor: 'black', borderWidth: 1, padding: 10, borderRadius: 5 }}
@@ -82,6 +91,8 @@ export function AppCalendar() {
       </Text>
     </TouchableOpacity>
   </View>
+  
+  
 )}
 
     </View>
@@ -117,4 +128,3 @@ const styles = StyleSheet.create({
   },
 });
 export default MainApp;
-
