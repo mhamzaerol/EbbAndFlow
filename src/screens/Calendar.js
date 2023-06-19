@@ -25,7 +25,9 @@ export function AppCalendar() {
   const moodRecords = useSelector(state => state.persistentData.moodRecords);
 
   const markedDates = moodRecords.reduce((acc, record) => {
-    const dateString = record.get('date').toISOString().split('T')[0];
+    const date = new Date(record.get('date'));
+    date.setDate(date.getDate() + 1);
+    const dateString = date.toISOString().split('T')[0];
     return { ...acc, [dateString]: { marked: true, dotColor: 'orange' } };
   }, {});
 
