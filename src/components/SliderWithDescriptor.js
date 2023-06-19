@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSelector, useDispatch } from 'react-redux';
-import { setMood } from 'src/redux/actions';
-import {MoodRecord} from 'src/redux/datatypes';
+import { setMood, delSeagullChat } from 'src/redux/actions';
+import { MoodRecord } from 'src/redux/datatypes';
+
 
 const defaultProps = {
     minimumValue: 0,
@@ -48,6 +49,11 @@ export function SliderWithDescriptor(props) {
             setMood(        
                 newMoodInfo
             )   
+        )
+        dispatch(
+            delSeagullChat(
+                curDate
+            )
         )
     };
 

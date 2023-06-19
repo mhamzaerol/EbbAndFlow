@@ -5,6 +5,7 @@ export const RESET_APP = 'RESET_APP';
 export const SET_AUTH = 'SET_AUTH';
 export const SET_FONT_SIZE = 'SET_FONT_SIZE';
 export const ADD_SEAGULL_CHAT = 'ADD_SEAGULL_CHAT';
+export const DEL_SEAGULL_CHAT = 'DEL_SEAGULL_CHAT';
 
 export const setMood = (newMood) => dispatch => {
     dispatch({
@@ -46,6 +47,14 @@ export const addSeagullChat = (newSeagullChat) => dispatch => {
         payload: { newSeagullChat },
     });
 }
+
+export const delSeagullChat = (date) => dispatch => {
+    dispatch({
+        type: DEL_SEAGULL_CHAT,
+        payload: { date },
+    });
+}
+
 
 // Temporary Data Actions
 export const GO_NEXT_PAGE = 'GO_NEXT_PAGE';
