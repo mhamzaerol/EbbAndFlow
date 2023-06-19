@@ -1,9 +1,10 @@
-// Persistent Data Actions
 export const SET_MOOD = 'SET_MOOD';
 export const DEL_MOOD = 'DEL_MOOD';
 export const RESET_APP = 'RESET_APP';
 export const SET_AUTH = 'SET_AUTH';
 export const SET_FONT_SIZE = 'SET_FONT_SIZE';
+export const SAVE_DIARY = 'SAVE_DIARY';
+export const DEL_DIARY = 'DEL_DIARY';
 
 export const setMood = (newMood) => dispatch => {
     dispatch({
@@ -11,6 +12,20 @@ export const setMood = (newMood) => dispatch => {
         payload: { newMood },
     });
 };
+
+export const saveDiary = (newDiary) => dispatch =>{
+    dispatch({
+        type:SAVE_DIARY,
+        payload:{ newDiary },
+    })
+}
+
+export const delDiary = (date) => dispatch =>{
+    dispatch({
+        type:DEL_DIARY,
+        payload:{ date },
+    })
+}
 
 export const delMood = (date) => dispatch => {
     dispatch({
@@ -44,6 +59,7 @@ export const GO_NEXT_PAGE = 'GO_NEXT_PAGE';
 export const GO_PREV_PAGE = 'GO_PREV_PAGE';
 export const AUTH_SUCCESSFUL = 'AUTH_SUCCESSFUL';
 export const SET_CUR_DATE = 'SET_CUR_DATE';
+
 
 // export const goNextPage = (pageName) => dispatch => {
 //     dispatch({

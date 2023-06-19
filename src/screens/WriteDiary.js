@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Text, Image, TouchableHighlight } from "react-native";
 // import { AntDesign } from "@expo/vector-icons";
 import { GoBackArrowIcon } from "src/components/svg/GoBackArrowIcon";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { goPrevPage } from "src/redux/actions";
 import { TouchableOpacity } from "react-native";
 import { EraserIcon } from "src/components/svg/EraserIcon";
@@ -10,35 +10,70 @@ import { goNextPage } from "src/redux/actions";
 import { useEffect } from "react";
 import { Keyboard } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
+import { saveDiary, delDiary } from "src/redux/actions";
+import { DiaryRecord } from "src/redux/datatypes";
+import { useSelector } from "react-redux";
 
 
 const JournalPage = () => {
-  const [title, setTitle] = useState("");
-  const [entryText, setEntryText] = useState("");
 
   const dispatch = useDispatch();
 
-  const handleSaveEntry = () => {
-    dispatch(goNextPage('Home'));
-  };
+  const curDate = useSelector((store) => store.temporaryData.curDate);
+  const diaryInfo = useSelector((store) => {
+    let diaryRecords = store.persistentData.diaryRecords;
+    diaryRecords = diaryRecords.filter((diaryRecord) => diaryRecord.check('date', curDate));
+    if (diaryRecords.length > 0) {
+      return diaryRecords[0];
+    }
+    return new DiaryRecord(curDate, '', '');
+  });
 
   const handleBack = () => {
     dispatch(goPrevPage());
   };
 
   const handleErase = () => {
-    setEntryText("")
+    dispatch(
+      delDiary(
+        curDate
+      )
+    )
   };
 
   const handleChat = () => {
     dispatch(goNextPage('MrSeagull'));
   };
 
+  const handleSetDiaryTitle = (title) => {
+    const diaryInfoClone = diaryInfo.clone();
+    diaryInfoClone.set('diaryTitle', title);
+    dispatch(
+      saveDiary(
+        diaryInfoClone
+      )
+    )
+  };
+
+  const handleSetDiaryStr = (str) => {
+    const diaryInfoClone = diaryInfo.clone();
+    diaryInfoClone.set('diaryStr', str);
+    dispatch(
+      saveDiary(
+        diaryInfoClone
+      )
+    )
+  };
+
+  const handleGoHome = () => {
+    dispatch(goNextPage('Home'));
+  };
+
   return (
 
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <View style={{ marginBottom: 20, top: 40, marginHorizontal: -10 }}>
+        <View style={{ marginBottom: 25, top: 40, marginHorizontal: -10 }}>
           <View style={styles.back}>
             <TouchableOpacity onPress={handleBack}>
               <GoBackArrowIcon />
@@ -58,8 +93,8 @@ const JournalPage = () => {
             <TextInput
               style={{ fontSize: 20,}}
               placeholder="Write the title here"
-              value={title}
-              onChangeText={(title) => setTitle(title)}
+              value={diaryInfo.get('diaryTitle')}
+              onChangeText={(title) => handleSetDiaryTitle(title)}
 
             />
           </View>
@@ -68,8 +103,8 @@ const JournalPage = () => {
           style={styles.input}
           multiline
           placeholder="Write your journal entry here"
-          value={entryText}
-          onChangeText={(text) => setEntryText(text)}
+          value={diaryInfo.get('diaryStr')}
+          onChangeText={(text) => handleSetDiaryStr(text)}
         />
 
         {/* <View style={styles.images}>
@@ -79,14 +114,14 @@ const JournalPage = () => {
 
         <View style={styles.button}>
 
-          <TouchableOpacity onPress={handleSaveEntry} style={{ flexDirection: 'column', alignItems: 'center' }}>
+          <TouchableOpacity onPress={handleGoHome} style={{ flexDirection: 'column', alignItems: 'center' }}>
             <Image
               style={styles.saveImg1}
               source={require("images/icons8-boat-96.png")}
             />
             <View style={styles.save}>
               <Text style={{ fontSize: 20 }}>
-                Save & Exit
+                Return Home
               </Text>
               {/* <Text style={{ fontSize: 20 }}>Exit</Text> */}
             </View>
@@ -118,10 +153,9 @@ const styles = StyleSheet.create({
   title: {
     // height: 30,
     // marginBottom: 10,
-    width: 220,
+    width: '80%',
     borderColor: "gray",
     // bottom: 8,
-
   },
   input: {
     flex: 1,
@@ -132,13 +166,13 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     fontSize: 16,
+    marginTop: 5,
   },
   button: {
     fontSize: 50,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    top:13
   },
   back: {
     flexDirection: "row",
