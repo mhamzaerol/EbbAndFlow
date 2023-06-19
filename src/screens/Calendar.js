@@ -65,7 +65,9 @@ export function AppCalendar() {
     padding: 20,
     borderWidth: 1,
     borderColor: 'gray',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    
+    
   }}>
     <View style={{ flexDirection: 'row', alignItems: 'center' }}> 
       {selectedRecord && 

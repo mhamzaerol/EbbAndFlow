@@ -1,88 +1,86 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Text, Image, TouchableHighlight } from "react-native";
 // import { AntDesign } from "@expo/vector-icons";
 import { GoBackArrowIcon } from "src/components/svg/GoBackArrowIcon";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { goPrevPage } from "src/redux/actions";
 import { TouchableOpacity } from "react-native";
 import { EraserIcon } from "src/components/svg/EraserIcon";
 import { goNextPage } from "src/redux/actions";
+import { useEffect } from "react";
 import { Keyboard } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
-import { addDiaryRecord, delDiaryRecord } from 'src/redux/actions';
-import { useRoute } from '@react-navigation/native';
+import { saveDiary, delDiary } from "src/redux/actions";
 import { DiaryRecord } from "src/redux/datatypes";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+
 
 const JournalPage = () => {
-  const curDate = useSelector(state => state.temporaryData.curDate);
-  const [title, setTitle] = useState("");
-  const [entryText, setEntryText] = useState("");
-  const [date, setDate] = useState(curDate ? new Date(curDate) : new Date()); // Use useState to set the date
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchDiaryData = async () => {
-      const storedDate = await AsyncStorage.getItem('@curDate');
-      if (storedDate) {
-        const diaryRecord = await AsyncStorage.getItem(`@diary_${storedDate}`);
-        if (diaryRecord) {
-          const { title, entryText } = JSON.parse(diaryRecord);
-          setTitle(title);
-          setEntryText(entryText);
-        }
-      }
-    };
-    fetchDiaryData();
-  }, []);
-  
-  const handleSaveEntry = async () => {
-    const newRecord = new DiaryRecord(date, title, entryText);
-    dispatch(addDiaryRecord(newRecord));
-    await AsyncStorage.setItem('@curDate', date.toISOString());
-    await AsyncStorage.setItem(`@diary_${date.toISOString()}`, JSON.stringify(newRecord));
-  };
-
-  useEffect(() => {
-    const getDateFromStorage = async () => {
-      const storedDate = await AsyncStorage.getItem('@curDate');
-      if (storedDate) {
-        setDate(new Date(storedDate));
-      }
-    };
-    getDateFromStorage();
-  }, []);
+  const curDate = useSelector((store) => store.temporaryData.curDate);
+  const diaryInfo = useSelector((store) => {
+    let diaryRecords = store.persistentData.diaryRecords;
+    diaryRecords = diaryRecords.filter((diaryRecord) => diaryRecord.check('date', curDate));
+    if (diaryRecords.length > 0) {
+      return diaryRecords[0];
+    }
+    return new DiaryRecord(curDate, '', '');
+  });
 
   const handleBack = () => {
     dispatch(goPrevPage());
   };
-  // console.log(AsyncStorage.getItem('@curDate'));
-  const handleErase = async () => {
-    try {
-      await AsyncStorage.removeItem(`@diary_${date.toISOString()}`);
-      dispatch(delDiaryRecord(date.toISOString()));
-      setTitle("");
-      setEntryText("");
-    } catch (error) {
-      console.log("Error deleting diary record: ", error);
-    }
+
+  const handleErase = () => {
+    dispatch(
+      delDiary(
+        curDate
+      )
+    )
   };
 
   const handleChat = () => {
     dispatch(goNextPage('MrSeagull'));
   };
 
+  const handleSetDiaryTitle = (title) => {
+    const diaryInfoClone = diaryInfo.clone();
+    diaryInfoClone.set('diaryTitle', title);
+    dispatch(
+      saveDiary(
+        diaryInfoClone
+      )
+    )
+  };
+
+  const handleSetDiaryStr = (str) => {
+    const diaryInfoClone = diaryInfo.clone();
+    diaryInfoClone.set('diaryStr', str);
+    dispatch(
+      saveDiary(
+        diaryInfoClone
+      )
+    )
+  };
+
+  const handleGoHome = () => {
+    dispatch(goNextPage('Home'));
+  };
+
   return (
+
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <View style={{ marginBottom: 20, top: 40, marginHorizontal: -10 }}>
+        <View style={{ marginBottom: 25, top: 40, marginHorizontal: -10 }}>
           <View style={styles.back}>
             <TouchableOpacity onPress={handleBack}>
               <GoBackArrowIcon />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleErase}>
-              <EraserIcon />
+              <EraserIcon
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -93,10 +91,11 @@ const JournalPage = () => {
 
           <View style={styles.title}>
             <TextInput
-              style={{ fontSize: 20 }}
+              style={{ fontSize: 20,}}
               placeholder="Write the title here"
-              value={title}
-              onChangeText={(title) => setTitle(title)}
+              value={diaryInfo.get('diaryTitle')}
+              onChangeText={(title) => handleSetDiaryTitle(title)}
+
             />
           </View>
         </View>
@@ -104,18 +103,27 @@ const JournalPage = () => {
           style={styles.input}
           multiline
           placeholder="Write your journal entry here"
-          value={entryText}
-          onChangeText={(text) => setEntryText(text)}
+          value={diaryInfo.get('diaryStr')}
+          onChangeText={(text) => handleSetDiaryStr(text)}
         />
 
+        {/* <View style={styles.images}>
+        
+        
+      </View> */}
+
         <View style={styles.button}>
-          <TouchableOpacity onPress={handleSaveEntry} style={{ flexDirection: 'column', alignItems: 'center' }}>
+
+          <TouchableOpacity onPress={handleGoHome} style={{ flexDirection: 'column', alignItems: 'center' }}>
             <Image
               style={styles.saveImg1}
               source={require("images/icons8-boat-96.png")}
             />
             <View style={styles.save}>
-              <Text style={{ fontSize: 20 }}>Save & Exit</Text>
+              <Text style={{ fontSize: 20 }}>
+                Return Home
+              </Text>
+              {/* <Text style={{ fontSize: 20 }}>Exit</Text> */}
             </View>
           </TouchableOpacity>
 
@@ -143,8 +151,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   title: {
-    width: 220,
+    // height: 30,
+    // marginBottom: 10,
+    width: '80%',
     borderColor: "gray",
+    // bottom: 8,
   },
   input: {
     flex: 1,
@@ -155,6 +166,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     fontSize: 16,
+    marginTop: 5,
   },
   button: {
     fontSize: 50,
@@ -169,6 +181,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   save: {
+    // height: 46,
+    // width: 108,
+    // paddingTop: 7,
+    // paddingLeft: 13,
+    // paddingRight: 5,
+    // paddingBottom: 5,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: 'white',
