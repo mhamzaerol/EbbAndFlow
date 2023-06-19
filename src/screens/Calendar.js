@@ -17,7 +17,6 @@ export function AppCalendar() {
   const [selected, setSelected] = useState('');
   const [selectedRecord, setSelectedRecord] = useState(null);
   const dispatch = useDispatch();
-
   const diaryRecords = useSelector(state => state.persistentData.diaryRecords);
   const moodRecords = useSelector(state => state.persistentData.moodRecords);
   const markedDates = moodRecords.reduce((acc, record) => {
@@ -39,9 +38,6 @@ export function AppCalendar() {
     setSelectedRecord(mood);
   };
 
-  // console.log(markedDates)
-  // console.log(diaryRecords.length);
-  // console.log(diaryRecords);
   return (
     <View>
       <Calendar

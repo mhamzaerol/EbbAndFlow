@@ -39,8 +39,6 @@ function getRecordsWithinTwoWeeks(moodRecords, curDate) {
     }
   });
 
-  console.log(feelings, intensities)
-
   
 
   // Iterate through the dates array
@@ -173,9 +171,6 @@ const Constellation = () => {
     // 7 is for number of days of a week
     const delta = numDaysToDisplay - (index + 6) - 1;
     const dateSet = new Date(today.getFullYear(), today.getMonth(), today.getDate() - delta);
-    console.log(dateSet)
-    // selectedIndex = index + 6;
-    // console.log(selectedIndex);
     dispatch(
       setCurDate(
         dateSet
