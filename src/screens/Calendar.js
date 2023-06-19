@@ -17,7 +17,6 @@ export function AppCalendar() {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  // console.log(diaryRecords);
   const diaryRecords = useSelector(state => state.persistentData.diaryRecords);
   const markedDates = diaryRecords.reduce((acc, record) => {
     const dateString = record.get('date').toISOString().split('T')[0];
@@ -27,16 +26,12 @@ export function AppCalendar() {
     setSelected(day.dateString);
     dispatch(setCurDate(new Date(day.dateString))); 
     // const date = useSelector(state => state.temporaryData.curDate);
-    // console.log(date)
     const record = diaryRecords.find(
       record => record.get('date').toISOString().split('T')[0] === day.dateString
     );
     setSelectedRecord(record);
   };
 
-  // console.log(markedDates)
-  // console.log(diaryRecords.length);
-  // console.log(diaryRecords);
   return (
     <View>
       <Calendar

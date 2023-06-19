@@ -34,7 +34,6 @@ export function SliderWithDescriptor(props) {
         let moodRecords = store.persistentData.moodRecords;
         moodRecords = moodRecords.filter((moodRecord) => moodRecord.check('date', curDate));
         if (moodRecords.length > 0) {
-            console.log('Found!!');
             return moodRecords[0];
         }
         return new MoodRecord(curDate, finalProps.minimumValue, finalProps.minimumValue);
