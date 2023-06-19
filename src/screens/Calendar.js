@@ -9,29 +9,33 @@ import { useDispatch } from 'react-redux';
 import { goNextPage, goPrevPage } from 'src/redux/actions';
 import { useSelector } from 'react-redux'; 
 import { setCurDate } from 'src/redux/actions';
-import { useNavigation } from '@react-navigation/native';
+import { MoodRecord } from 'src/redux/datatypes'; 
 
 // Calendar
 export function AppCalendar() {
   const [selected, setSelected] = useState('');
   const [selectedRecord, setSelectedRecord] = useState(null);
-  const navigation = useNavigation();
   const dispatch = useDispatch();
-  // console.log(diaryRecords);
+
   const diaryRecords = useSelector(state => state.persistentData.diaryRecords);
-  const markedDates = diaryRecords.reduce((acc, record) => {
+  const moodRecords = useSelector(state => state.persistentData.moodRecords);
+  const markedDates = moodRecords.reduce((acc, record) => {
     const dateString = record.get('date').toISOString().split('T')[0];
     return { ...acc, [dateString]: { marked: true, dotColor: 'orange' }};
   }, {});
   const handleDayPress = (day) => {
     setSelected(day.dateString);
-    dispatch(setCurDate(day.dateString));
+    dispatch(setCurDate(new Date(day.dateString))); 
     // const date = useSelector(state => state.temporaryData.curDate);
     // console.log(date)
+    const mood = moodRecords.find(
+      mood => mood.get('date').toISOString().split('T')[0] === day.dateString
+    );
     const record = diaryRecords.find(
       record => record.get('date').toISOString().split('T')[0] === day.dateString
     );
-    setSelectedRecord(record);
+    // setSelectedRecord(record);
+    setSelectedRecord(mood);
   };
 
   // console.log(markedDates)
@@ -70,11 +74,11 @@ export function AppCalendar() {
       }
     </View>
     <TouchableOpacity
-      style={{ backgroundColor: 'black', padding: 10, borderRadius: 5 }}
-      onPress={() => dispatch(selectedRecord ? goNextPage('WriteDiary') : goNextPage('WriteDiary'))}
+      style={{ backgroundColor: 'white', borderRadius: 10, borderColor: 'black', borderWidth: 1, padding: 10, borderRadius: 5 }}
+      onPress={() => dispatch(selectedRecord ? goNextPage('MoodTracker') : goNextPage('MoodTracker'))}
     >
-      <Text style={{ color: 'white', fontSize: 20}}>
-        {selectedRecord ? 'View Diary' : 'Write Diary'}
+      <Text style={{ color: 'black', fontSize: 20}}>
+        {selectedRecord ? 'View Mood' : 'Track Mood'}
       </Text>
     </TouchableOpacity>
   </View>
