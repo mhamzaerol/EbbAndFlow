@@ -60,20 +60,22 @@ export function AppCalendar() {
     padding: 20,
     borderWidth: 1,
     borderColor: 'gray',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    
+    
   }}>
     <View> 
-      <Text style={{ marginBottom: 10 , fontSize: 16}}>Date: {selected}</Text>
+      <Text style={{ marginBottom: 10 , fontSize: 18}}>Date: {selected}</Text>
       {selectedRecord
-        ? <Text style={{ marginBottom: 10 , fontSize: 16}}>{selectedRecord.get('diaryTitle')}</Text>
-        : <Text style={{ marginBottom: 10 , fontSize: 16}}>No diary yet.</Text>
+        ? <Text style={{ marginBottom: 10 , fontSize: 18}}>{selectedRecord.get('diaryTitle')}</Text>
+        : <Text style={{ marginBottom: 10 , fontSize: 18}}>No diary yet.</Text>
       }
     </View>
     <TouchableOpacity
       style={{ backgroundColor: 'black', padding: 10, borderRadius: 5 }}
       onPress={() => dispatch(selectedRecord ? goNextPage('WriteDiary') : goNextPage('WriteDiary'))}
     >
-      <Text style={{ color: 'white', fontSize: 20}}>
+      <Text style={{ color: 'white', fontSize: 18}}>
         {selectedRecord ? 'View Diary' : 'Write Diary'}
       </Text>
     </TouchableOpacity>
@@ -113,4 +115,6 @@ const styles = StyleSheet.create({
   },
 });
 export default MainApp;
+
+
 

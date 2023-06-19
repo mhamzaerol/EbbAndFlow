@@ -1,4 +1,4 @@
-import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE, RESET_APP, SET_AUTH, SET_FONT_SIZE } from "src/redux/actions";
+import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE, RESET_APP, SET_AUTH, SET_FONT_SIZE, SAVE_DIARY } from "src/redux/actions";
 import { persistentInitialState, temporaryInitialState } from 'src/redux/initialState';
 
 // Persistent Data Reducers
@@ -6,6 +6,8 @@ export const diaryRecordsReducer = (state = persistentInitialState.diaryRecords,
     switch (action.type) {
         case RESET_APP:
             return persistentInitialState.diaryRecords;
+        case SAVE_DIARY:
+            return action.payload.newDiary;
         default:
             return state;
     }
@@ -93,21 +95,4 @@ export const curDateReducer = (state = temporaryInitialState.curDate, action) =>
             return state;
     }
 };
-
-// export const pageHistoryReducer = (state = temporaryInitialState.pageHistory, action) => {
-//     switch (action.type) {
-//       case GO_NEXT_PAGE:
-//         return [
-//           ...state,
-//           {
-//             pageName: action.payload.pageName,
-//             params: action.payload.params,
-//           }
-//         ];
-//       case GO_PREV_PAGE:
-//         return state.slice(0, -1);
-//       default:
-//         return state;
-//     }
-// }
   
