@@ -2,89 +2,92 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, TextInput, View, Button, Image, ScrollView, KeyboardAvoidingView, TouchableOpacity, Platform } from 'react-native';
 import Svg, { Path } from "react-native-svg";
 import { GoBackArrowIcon } from 'src/components/svg/GoBackArrowIcon';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { goPrevPage } from 'src/redux/actions';
 import CrossIcon from 'src/components/svg/CrossIcon';
 import { goNextPage } from 'src/redux/actions';
 import PaperPlaneTiltIcon from 'src/components/svg/PaperPlaneTiltIcon';
 import axios from 'axios';
+import { addSeagullChat } from 'src/redux/actions';
+import { SeagullChat } from 'src/redux/datatypes';
 
-export default function ChatBotScreen({ navigation }) {
+export default function ChatBotScreen() {
 
-  const [messages, setMessages] = useState([
-    {
-      text: 'Hello, I am Mr. Seagull, your personal assistant.\n\nI checked your mood record and diary, and I am ready to assist you.\n\nIn case you want to discuss something specific, please let me know.\n\nOtherwise, I can share my help and advice on how to help you with your situation.',
-      sender: 'system'
-    }
-  ]);
   const [input, setInput] = useState('');
+  const [renderPercentageSeagull, setRenderPercentageSeagull] = useState(1);
   const scrollViewRef = React.useRef();
+  
+  const curDate = useSelector(state => state.temporaryData.curDate);
+  const userMood = useSelector(state => state.persistentData.moodRecords.find(moodRecord => moodRecord.check('date', curDate)));
+  const messages = useSelector(state => {
+    const messages = state.persistentData.seagullChats.filter(
+      (seagullChat) => seagullChat.check('date', curDate) || seagullChat.check('date', new Date(1900, 1, 1))
+    );
+    messages.sort((a, b) => a.get('index') - b.get('index'));
+    return messages;
+  });
+  
+  const dispatch = useDispatch();
 
-  let initialPromptTemplate = 'From now on, you are the personal assistant of me. Your task is to help me with my situation. Here is my diary of today:\n\n${userDiary}\n\n\
-  Also, I provide you with my mood record:\n\n${userMood}\n\nPlease adjust your response accordingly. Namely, \
-  please take the mood record into account when you respond to me and help me with what I mention you in my diary. \
-  It is possible that I may not have provided a diary record or a mood record. In that case, adjust your response accordingly.\n\
-  Do not forget that your role is to help me and improve my mood and feelings. Also, you should guide me as well!!'
+  async function animateMessage(percentage) {
+    setRenderPercentageSeagull(percentage);
+    scrollViewRef.current.scrollToEnd({ animated: true });
+    if(percentage < 1) {
+      setTimeout(() => {
+        animateMessage(percentage + 0.1);
+      }, 300);
+    }
+  }
 
-  async function communicateMrSeagull(messages) {
-    setMessages([...messages, { text: '...', sender: 'system' }]);
-    const history = messages.map(message => ({
-      role: message.sender,
+  async function communicateMrSeagull() {
+
+    let history = messages.map(message => ({
+      role: message.isMrSeagull ? 'system' : 'user',
       content: message.text
     }));
 
-    // TODO: get user diary and mood record from redux
+    // TODO: get user diary and mood record from redux!!!!!
     const userDiary = 'Today was very difficult, I felt very sad because my friend did not want to play with me :((';
-    const userMood = 'My mood record for today: intensity: 60/100 and valence: 30/100';
+    const moodInfo = 'My mood record for today: Intensity -> ' + userMood.get('intensity') + '/100 and Valence -> ' + userMood.get('valence') + '/100';
 
-    // insert the prompt that conditions the bot, at the beginning of the history
-    history.unshift({
-      role: 'user', 
-      content: initialPromptTemplate.replace('${userDiary}', userDiary).replace('${userMood}', userMood)
-    });
-
-    console.log(history);
+    history[0].content = history[0].content.replace('${userDiary}', userDiary).replace('${userMood}', moodInfo);
 
     try {
       // Send POST request to backend
       const response = await axios.post('http://mhamzaerol.pythonanywhere.com/api', {
-        history: history
+        history: history,
+        password: 'intro-to-swe-project-ebb-and-flow-api-for-mr-seagull'
       });
-      // Add AI message to local state
-      const aiMessage = response.data.message;
-      // setMessages([...messages, { text: aiMessage, sender: 'system' }]);
 
-      // make it progressive
-      let messageLen = aiMessage.length;
-      for(let i = 0; i < 10; i++) {
-        setTimeout(() => {
-          setMessages([...messages, { text: aiMessage.slice(0, Math.floor(messageLen * (i+1) / 10)), sender: 'system' }]);
-        }, 250 * i);
-      }
-      // setMessages([...messages.slice(0, -1), { text: aiMessage, sender: 'system' }]);
+      const aiMessage = response.data.message;
+      animateMessage(0);
+      dispatch(addSeagullChat(new SeagullChat(curDate, messages.length, true, aiMessage)));
     } catch (error) {
       console.error(error);
     }
   }
-  
+
   function sendMessage() {
     if (input.length > 0) {
-      // Add user message to local state
-      const newMessages = [...messages, { text: input, sender: 'user' }];
-      setMessages(newMessages);
+      dispatch(addSeagullChat(new SeagullChat(curDate, messages.length, false, input)));
       setInput('');
-  
-      communicateMrSeagull(newMessages);
+      setTimeout(() => {
+        setRenderPercentageSeagull(-1);
+      }, 250);
     }
   }
 
   useEffect(() => {
+
     setTimeout(() => {
       scrollViewRef.current.scrollToEnd({ animated: true });
     }, 250);
-  }, [messages]);
 
-  const dispatch = useDispatch();
+    if(messages[messages.length - 1].get('isMrSeagull') === false) {
+      communicateMrSeagull();
+    }
+
+  }, [messages && messages.length]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -118,10 +121,22 @@ export default function ChatBotScreen({ navigation }) {
       >
         <ScrollView ref={scrollViewRef}>
           {messages.map((message, index) => (
-            <View key={index} style={message.sender === 'user' ? styles.userMessage : styles.chatbotMessage}>
-              <Text>{message.text}</Text>
+            index > 0 && 
+            <View key={index} style={message.isMrSeagull ? styles.chatbotMessage : styles.userMessage}>
+              {
+                index == messages.length - 1 && message.isMrSeagull ? (
+                  <Text>{message.text.slice(0, Math.floor(message.text.length * renderPercentageSeagull))}</Text>
+                ) :
+                <Text>{message.text}</Text>
+              }
             </View>
           ))}
+          {
+            renderPercentageSeagull < 0 && 
+            <View key={'...'} style={styles.chatbotMessage}>
+              <Text>...</Text>
+            </View>
+          }
         </ScrollView>
 
         <View style={styles.inputContainer}>

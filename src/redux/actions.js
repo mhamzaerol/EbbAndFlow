@@ -4,6 +4,7 @@ export const DEL_MOOD = 'DEL_MOOD';
 export const RESET_APP = 'RESET_APP';
 export const SET_AUTH = 'SET_AUTH';
 export const SET_FONT_SIZE = 'SET_FONT_SIZE';
+export const ADD_SEAGULL_CHAT = 'ADD_SEAGULL_CHAT';
 
 export const setMood = (newMood) => dispatch => {
     dispatch({
@@ -36,6 +37,13 @@ export const setFontSize = (fontSize) => dispatch => {
     dispatch({
         type: SET_FONT_SIZE,
         payload: { fontSize },
+    });
+}
+
+export const addSeagullChat = (newSeagullChat) => dispatch => {
+    dispatch({
+        type: ADD_SEAGULL_CHAT,
+        payload: { newSeagullChat },
     });
 }
 
