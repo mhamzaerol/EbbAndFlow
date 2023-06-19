@@ -26,7 +26,6 @@ export function AppCalendar() {
 
   const markedDates = moodRecords.reduce((acc, record) => {
     const date = new Date(record.get('date'));
-    date.setDate(date.getDate() + 1);
     const dateString = date.toISOString().split('T')[0];
     return { ...acc, [dateString]: { marked: true, dotColor: 'orange' } };
   }, {});
@@ -34,7 +33,6 @@ export function AppCalendar() {
   const handleDayPress = (day) => {
     const dayDate = new Date(day.dateString);
     setSelected(day.dateString);
-    dispatch(setCurDate(dayDate));
     
     const mood = moodRecords.find(
       mood => mood.check('date', dayDate)
@@ -45,6 +43,8 @@ export function AppCalendar() {
     
     setselectedMoodRecord(mood);
     setselectedDiaryRecord(diary);
+    dispatch(setCurDate(dayDate));
+
   };
 
   return (
