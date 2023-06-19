@@ -1,5 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput, View, Button, Image, ScrollView, KeyboardAvoidingView, TouchableOpacity, Platform } from 'react-native';
+import React, { useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Button,
+  Image,
+  ScrollView,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { GoBackArrowIcon } from 'src/components/svg/GoBackArrowIcon';
 import { useDispatch, useSelector } from 'react-redux';
@@ -95,25 +107,30 @@ export default function ChatBotScreen() {
         <TouchableOpacity onPress={() => dispatch(goPrevPage())}>
           <GoBackArrowIcon />
         </TouchableOpacity>
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-        <Image
-              style={{width: 50, height: 50, marginRight: 1}}
-              source={require("images/icons8-seagull-100.png")}
-            />
-        <Text
+        <View
           style={{
-            fontSize: 24,
-            fontWeight: 'bold',
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          Mr. Seagull
-        </Text>
+          <Image
+            style={{ width: 50, height: 50, marginRight: 1 }}
+            source={require("images/icons8-seagull-100.png")}
+          />
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+            }}
+          >
+            Mr. Seagull
+          </Text>
         </View>
-        <TouchableOpacity onPress={() => dispatch(goNextPage('Home'))}>
+        <TouchableOpacity onPress={() => dispatch(goNextPage("Home"))}>
           <CrossIcon />
         </TouchableOpacity>
       </View>
-
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -144,13 +161,13 @@ export default function ChatBotScreen() {
             style={styles.input}
             placeholder="Type a message"
             value={input}
-            onChangeText={text => setInput(text)}
+            onChangeText={(text) => setInput(text)}
             multiline={true}
           />
 
           {/* <Button title="Send" onPress={sendMessage} /> */}
           <TouchableOpacity onPress={sendMessage} style={{ paddingLeft: 10 }}>
-            <PaperPlaneTiltIcon width='32' height='32' />
+            <PaperPlaneTiltIcon width="32" height="32" />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -158,55 +175,60 @@ export default function ChatBotScreen() {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   iconsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 10,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
   },
   chatContainer: {
     flex: 1,
     padding: 10,
     // something light color
-    borderTopColor: 'lightgray',
+    borderTopColor: "lightgray",
     borderTopWidth: 1,
   },
   inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 10,
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   input: {
     flex: 1,
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
+    fontSize:18,
+    fontWeight:'bold',
+    marginTop: 10,
+    marginBottom: 5,
+
   },
   userMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: 'lightblue',
+    alignSelf: "flex-end",
+    backgroundColor: "lightblue",
     borderRadius: 10,
     marginBottom: 10,
     padding: 10,
   },
   chatbotMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'lightgray',
+    alignSelf: "flex-start",
+    backgroundColor: "lightgray",
     borderRadius: 10,
     marginBottom: 10,
     padding: 10,
   },
 });
+
