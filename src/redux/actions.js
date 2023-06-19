@@ -4,6 +4,7 @@ export const RESET_APP = 'RESET_APP';
 export const SET_AUTH = 'SET_AUTH';
 export const SET_FONT_SIZE = 'SET_FONT_SIZE';
 export const SAVE_DIARY = 'SAVE_DIARY';
+export const DEL_DIARY = 'DEL_DIARY';
 
 export const setMood = (newMood) => dispatch => {
     dispatch({
@@ -16,6 +17,13 @@ export const saveDiary = (newDiary) => dispatch =>{
     dispatch({
         type:SAVE_DIARY,
         payload:{ newDiary },
+    })
+}
+
+export const delDiary = (date) => dispatch =>{
+    dispatch({
+        type:DEL_DIARY,
+        payload:{ date },
     })
 }
 
