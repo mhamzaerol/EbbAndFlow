@@ -31,8 +31,11 @@ function getRecordsWithinTwoWeeks(moodRecords, curDate) {
 
   moodRecords.forEach(moodRecord => {
     const date = moodRecord.get('date');
+    const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const diffTime = Math.abs(currentDate.getTime() - dateOnly.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     // if within the range
-    if (date.getTime() >= currentDate.getTime() - (numDaysToDisplay - 1) * 24 * 60 * 60 * 1000 && date.getTime() <= currentDate.getTime() + 24 * 60 * 60 * 1000) {
+    if (diffDays < numDaysToDisplay) {
       let i = currentDate.getDate() - date.getDate();
       feelings[numDaysToDisplay - i - 1] = moodRecord.get('valence') / 100.0;
       intensities[numDaysToDisplay - i - 1] = moodRecord.get('intensity') / 100.0;
