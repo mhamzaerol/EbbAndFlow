@@ -73,7 +73,7 @@ const JournalPage = () => {
 
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <View style={{ marginBottom: 20, top: 40, marginHorizontal: -10 }}>
+        <View style={{ marginBottom: 25, top: 40, marginHorizontal: -10 }}>
           <View style={styles.back}>
             <TouchableOpacity onPress={handleBack}>
               <GoBackArrowIcon />
@@ -153,10 +153,9 @@ const styles = StyleSheet.create({
   title: {
     // height: 30,
     // marginBottom: 10,
-    width: 220,
+    width: '80%',
     borderColor: "gray",
     // bottom: 8,
-
   },
   input: {
     flex: 1,
@@ -167,13 +166,13 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     fontSize: 16,
+    marginTop: 5,
   },
   button: {
     fontSize: 50,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    top:13
   },
   back: {
     flexDirection: "row",
