@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useSelector } from "react";
 import { View, TextInput, StyleSheet, Text, Image, TouchableHighlight } from "react-native";
 // import { AntDesign } from "@expo/vector-icons";
 import { GoBackArrowIcon } from "src/components/svg/GoBackArrowIcon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { goPrevPage } from "src/redux/actions";
 import { TouchableOpacity } from "react-native";
 import { EraserIcon } from "src/components/svg/EraserIcon";
@@ -10,6 +10,7 @@ import { goNextPage } from "src/redux/actions";
 import { useEffect } from "react";
 import { Keyboard } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
+import { saveDiary } from "../redux/actions";
 
 
 const JournalPage = () => {
@@ -18,8 +19,13 @@ const JournalPage = () => {
 
   const dispatch = useDispatch();
 
+  const saveDiar = useSelector((store) => store.persistentData.diaryRecords);
+
+
   const handleSaveEntry = () => {
-    dispatch(goNextPage('Home'));
+
+    dispatch(saveDiary(saveDiar))
+    //dispatch(goNextPage('Home'));
   };
 
   const handleBack = () => {
