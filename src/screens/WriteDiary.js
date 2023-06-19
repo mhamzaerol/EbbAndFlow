@@ -2,7 +2,7 @@ import React, { useState, useSelector } from "react";
 import { View, TextInput, StyleSheet, Text, Image, TouchableHighlight } from "react-native";
 // import { AntDesign } from "@expo/vector-icons";
 import { GoBackArrowIcon } from "src/components/svg/GoBackArrowIcon";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { goPrevPage } from "src/redux/actions";
 import { TouchableOpacity } from "react-native";
 import { EraserIcon } from "src/components/svg/EraserIcon";
