@@ -33,7 +33,7 @@ function Home() {
     return (
         <View style={styles.container}>
           <Constellation/>
-          {moodRecord.get('valence') < 0.5 ? (
+          {moodRecord.get('valence') / 100.0 < 0.5 ? (
             <TouchableWithoutFeedback onPress={() =>
               dispatch(
                 goNextPage('MoodTracker')
@@ -51,7 +51,7 @@ function Home() {
             </TouchableWithoutFeedback>
           )}
           <HomeBackground>
-            {moodRecord.get('valence') < 0.5 ? (
+            {moodRecord.get('valence') / 100.0 < 0.5 ? (
               <>
                 <Cloud style={styles.cloud} fill='gray'/>
                 <OceanWave intensity={moodRecord.get('intensity') / 100.0} />
