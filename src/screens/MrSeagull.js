@@ -30,7 +30,20 @@ export default function ChatBotScreen() {
   const scrollViewRef = React.useRef();
   
   const curDate = useSelector(state => state.temporaryData.curDate);
-  const userMood = useSelector(state => state.persistentData.moodRecords.find(moodRecord => moodRecord.check('date', curDate)));
+  const userMood = useSelector(state => {
+    const moodInfo = state.persistentData.moodRecords.find(moodRecord => moodRecord.check('date', curDate));
+    if(moodInfo) {
+      return moodInfo;
+    }
+    return { get: (x) => { return '?'; } };
+  });
+  const userDiary = useSelector(state => {
+    const diaryInfo = state.persistentData.diaryRecords.find(diaryRecord => diaryRecord.check('date', curDate));
+    if(diaryInfo) {
+      return diaryInfo;
+    }
+    return { get: (x) => { return '?'; } };
+  });
   const messages = useSelector(state => {
     const messages = state.persistentData.seagullChats.filter(
       (seagullChat) => seagullChat.check('date', curDate) || seagullChat.check('date', new Date(1900, 1, 1))
@@ -46,8 +59,8 @@ export default function ChatBotScreen() {
     scrollViewRef.current.scrollToEnd({ animated: true });
     if(percentage < 1) {
       setTimeout(() => {
-        animateMessage(percentage + 0.1);
-      }, 300);
+        animateMessage(percentage + 0.04);
+      }, 250);
     }
   }
 
@@ -59,10 +72,10 @@ export default function ChatBotScreen() {
     }));
 
     // TODO: get user diary and mood record from redux!!!!!
-    const userDiary = 'Today was very difficult, I felt very sad because my friend did not want to play with me :((';
+    const diaryInfo = 'My diary record for today:\n' + userDiary.get('diaryTitle') + '\n' + userDiary.get('diaryStr');
     const moodInfo = 'My mood record for today: Intensity -> ' + userMood.get('intensity') + '/100 and Valence -> ' + userMood.get('valence') + '/100';
 
-    history[0].content = history[0].content.replace('${userDiary}', userDiary).replace('${userMood}', moodInfo);
+    history[0].content = history[0].content.replace('${userDiary}', diaryInfo).replace('${userMood}', moodInfo);
 
     try {
       // Send POST request to backend

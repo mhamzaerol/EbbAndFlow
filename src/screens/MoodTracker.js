@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { goPrevPage, goNextPage,  delMood} from 'src/redux/actions';
+import { delSeagullChat } from 'src/redux/actions';
 
 export function MoodTracker() {
 
@@ -26,6 +27,7 @@ export function MoodTracker() {
                 <TouchableOpacity
                     onPress={() => { 
                         dispatch(delMood(curDate));
+                        dispatch(delSeagullChat(curDate));
                         // dispatch(goNextPage('Home'));
                      }}>
                     <EraserIcon height='48' width='48' />

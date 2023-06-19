@@ -21,7 +21,6 @@ export function AppCalendar() {
   const [selectedDiaryRecord, setselectedDiaryRecord] = useState(null);
 
   const dispatch = useDispatch();
-
   const diaryRecords = useSelector(state => state.persistentData.diaryRecords);
   const moodRecords = useSelector(state => state.persistentData.moodRecords);
 

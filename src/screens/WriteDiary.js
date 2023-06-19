@@ -10,7 +10,7 @@ import { goNextPage } from "src/redux/actions";
 import { useEffect } from "react";
 import { Keyboard } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
-import { saveDiary, delDiary } from "src/redux/actions";
+import { saveDiary, delDiary, delSeagullChat } from "src/redux/actions";
 import { DiaryRecord } from "src/redux/datatypes";
 import { useSelector } from "react-redux";
 
@@ -39,6 +39,11 @@ const JournalPage = () => {
         curDate
       )
     )
+    dispatch(
+      delSeagullChat(
+          curDate
+      )
+    )
   };
 
   const handleChat = () => {
@@ -46,6 +51,10 @@ const JournalPage = () => {
   };
 
   const handleSetDiaryTitle = (title) => {
+    const hasChanged = diaryInfo.get('diaryTitle') !== title;
+    if (!hasChanged) {
+      return;
+    }
     const diaryInfoClone = diaryInfo.clone();
     diaryInfoClone.set('diaryTitle', title);
     dispatch(
@@ -53,14 +62,28 @@ const JournalPage = () => {
         diaryInfoClone
       )
     )
+    dispatch(
+        delSeagullChat(
+            curDate
+        )
+    )
   };
 
   const handleSetDiaryStr = (str) => {
+    const hasChanged = diaryInfo.get('diaryStr') !== str;
+    if (!hasChanged) {
+      return;
+    }
     const diaryInfoClone = diaryInfo.clone();
     diaryInfoClone.set('diaryStr', str);
     dispatch(
       saveDiary(
         diaryInfoClone
+      )
+    )
+    dispatch(
+      delSeagullChat(
+          curDate
       )
     )
   };
@@ -95,7 +118,7 @@ const JournalPage = () => {
               placeholder="Write the title here"
               value={diaryInfo.get('diaryTitle')}
               onChangeText={(title) => handleSetDiaryTitle(title)}
-
+              // onEndEditing={(e) => handleSetDiaryTitle(e.nativeEvent.text)}
             />
           </View>
         </View>
@@ -105,6 +128,7 @@ const JournalPage = () => {
           placeholder="Write your journal entry here"
           value={diaryInfo.get('diaryStr')}
           onChangeText={(text) => handleSetDiaryStr(text)}
+          // onEndEditing={(e) => handleSetDiaryStr(e.nativeEvent.text)}
         />
 
         {/* <View style={styles.images}>
