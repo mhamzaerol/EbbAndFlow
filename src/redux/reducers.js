@@ -1,5 +1,6 @@
-import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE, RESET_APP, SET_AUTH, SET_FONT_SIZE, SAVE_DIARY, DEL_DIARY } from "src/redux/actions";
+import { GO_NEXT_PAGE, GO_PREV_PAGE, SET_MOOD, DEL_MOOD, AUTH_SUCCESSFUL, SET_CUR_DATE, RESET_APP, SET_AUTH, SET_FONT_SIZE, ADD_SEAGULL_CHAT, SAVE_DIARY, DEL_DIARY } from "src/redux/actions";
 import { persistentInitialState, temporaryInitialState } from 'src/redux/initialState';
+import { DEL_SEAGULL_CHAT } from "./actions";
 
 // Persistent Data Reducers
 export const diaryRecordsReducer = (state = persistentInitialState.diaryRecords, action) => {
@@ -32,6 +33,10 @@ export const seagullChatsReducer = (state = persistentInitialState.seagullChats,
     switch (action.type) {
         case RESET_APP:
             return persistentInitialState.seagullChats;
+        case ADD_SEAGULL_CHAT:
+            return [...state, action.payload.newSeagullChat];
+        case DEL_SEAGULL_CHAT:
+            return state.filter((seagullChat) => !seagullChat.check('date', action.payload.date));
         default:
             return state;
     }
