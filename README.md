@@ -105,40 +105,29 @@ This file stores the customized data types that are going to describe the persis
 
 This file stores the initial state of the redux store. It has the following basic structure:
 ```
-{
-    persistentData: {
-        diaryRecords: [],
-        moodRecords: [],
-        seagullChats: [],
-        fontSize: 'Normal',
-        requireAuthentication: false,
-    },
-    temporaryData: {
-        AuthenticationViewData: {
-            ...
-        },
-        CalendarViewData: {
-            ...
-        },
-        HomeViewData: {
-            ...
-        },
-        MoodTrackerViewData: {
-            ...
-        },
-        MrSeagullViewData: {
-            ...
-        },
-        SettingsViewData: {
-            ...
-        },
-        WriteDiaryViewData: {
-            ...
-        },
-    },
+export const persistentInitialState = {
+    diaryRecords: [],
+    moodRecords: [],
+    seagullChats: [
+        new SeagullChat(new Date(1900, 1, 1), 0, false, "From now on, you are the personal assistant of me. Your task is to help me with my situation. Here is my diary of today:\n\n${userDiary}\n\n\
+        Also, I provide you with my mood record:\n\n${userMood}\n\nPlease adjust your response accordingly. Namely, \
+        please take the mood record into account when you respond to me and help me with what I mention you in my diary. \
+        It is possible that I may not have provided a diary record or a mood record. In that case, adjust your response accordingly.\n\
+        Do not forget that your role is to help me and improve my mood and feelings. Also, you should guide me as well!!"),
+        new SeagullChat(new Date(1900, 1, 1), 1, true, "Hello, I am Mr. Seagull, your personal assistant.\n\nI checked your mood record and diary, and I am ready to assist you.\n\nIn case you want to discuss something specific, please let me know.\n\nOtherwise, I can share my help and advice on how to help you with your situation."),
+    ],
+    fontSize: 'Normal',
+    requireAuthentication: true,
+}
+
+export const temporaryInitialState = {
+    pageHistory: [
+        'Home'
+    ],
+    isAuthenticated: false,
+    curDate: new Date(2023, 5, 5),
 }
 ```
-For the temporary data, each view has its own object that stores the temporary data for that view. For example, the `HomeViewData` object stores the temporary data for the home view. 
 
 ### How to Use Redux
 
@@ -158,7 +147,7 @@ For the temporary data, each view has its own object that stores the temporary d
 
 In a react-native component, you can subscribe to the redux store by using the `useSelector` hook. The `useSelector` hook takes in a function that returns the piece of the state that you want to subscribe to. For example, if you want to subscribe to the `fontSize` property in the `persistentData` object, you can do the following:
 ```
-const fontSize = useSelector(state => state.persistentData.fontSize);
+const fontSize = useSelector(store => store.persistentData.fontSize);
 ```
 Whenever the `fontSize` property in the `persistentData` object is updated, the `fontSize` variable will be updated as well, which will cause the component to re-render. 
 
@@ -181,4 +170,5 @@ dispatch(setFontSize('Large'));
 This will update the `fontSize` property in the `persistentData` object to be `'Large'`.
 
 #### How to Persist the Redux Store
-TODO, Later
+
+In order to persist a part of the stored data in Redux, we make `persistConfig` and declare what part of the state to be persisted. In order to functionally apply this (namely, loading and saving), we implement a `stateReconciler` which loads the persisted data into the app, and we use `persistReducer` and `persistStore` to save the data. More details on how the reducers are configured and delegated as if to be persisted or not can be found in the `store.js` file. 
